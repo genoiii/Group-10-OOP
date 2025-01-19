@@ -1,0 +1,35 @@
+User #,Employee #,Username,Password,Role
+1,10001,AdminGarcia,10001,Admin
+2,10002,NonAdminLim,10002,Non-admin
+3,10003,Aquino,10003,Non-admin
+4,10004,Reyes,10004,Non-admin
+5,10005,Hernandez,10005,Non-admin
+6,10006,Villanueva,10006,Non-admin
+7,10007,San Jose,10007,Non-admin
+8,10008,Romualdez,10008,Non-admin
+9,10009,Atienza,10009,Non-admin
+10,10010,Alvaro,10010,Non-admin
+11,10011,Salcedo,10011,Non-admin
+12,10012,Lopez,10012,Non-admin
+13,10013,Farala,10013,Non-admin
+14,10014,Martinez,10014,Non-admin
+15,10015,Romualdez,10015,Non-admin
+16,10016,Mata,10016,Non-admin
+17,10017,De Leon,10017,Non-admin
+18,10018,San Jose,10018,Non-admin
+19,10019,Rosario,10019,Non-admin
+20,10020,Bautista,10020,Non-admin
+21,10021,Lazaro,10021,Non-admin
+22,10022,Delos Santos,10022,Non-admin
+23,10023,Santos,10023,Non-admin
+24,10024,Del Rosario,10024,Non-admin
+25,10025,Tolentino,10025,Non-admin
+26,10026,Gutierrez,10026,Non-admin
+27,10027,Manalaysay,10027,Non-admin
+28,10028,Villegas,10028,Non-admin
+29,10029,Ramos,10029,Non-admin
+30,10030,Maceda,10030,Non-admin
+31,10031,Aguilar,10031,Non-admin
+32,10032,Castro,10032,Non-admin
+33,10033,Martinez,10033,Non-admin
+34,10034,Santos,10034,Non-admin
