@@ -16,7 +16,7 @@ public class Product extends Sale{
 
     @Override
     public int computeTotalSale(int quantity) {
-        return super.getPrice() * quantity;
+        return price * quantity;
     }
       
     

@@ -10,15 +10,13 @@ package Class;
  */
 public class Service extends Sale{
 
-    private int totalServiceCost;
-
     public Service(String ItemName, int price) {
         super(ItemName, price);
     }
 
     @Override
-    public int computeTotalSale(int quantity) {
-        return super.getPrice() * quantity;
+    public int computeTotalSale(int hours) {
+        return price * hours;
     }
       
     

@@ -9,8 +9,8 @@ package Class;
  * @author 63909
  */
 public abstract class Sale {
-    private String ItemName;
-    private int price;
+    protected String ItemName;
+    protected int price;
     
     public Sale(String ItemName, int price){
         this.ItemName = ItemName;
@@ -18,10 +18,6 @@ public abstract class Sale {
     }
     
     public abstract int computeTotalSale(int quantity);
-    
-    public int getPrice(){
-        return price;
-    }
     
     public String getItemName(){
         return ItemName;
