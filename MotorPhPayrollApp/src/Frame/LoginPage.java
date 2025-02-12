@@ -4,9 +4,7 @@
  */
 package Frame;
 
-import Class.File;
-import Class.User;
-import java.util.*;
+import App.UMS.*;
 /**
  *
  * @author 63909
@@ -117,23 +115,28 @@ public class LoginPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username = jTextFieldUsername.getText(); 
         String password = jPasswordFieldPassword.getText();
-        ArrayList<String[]> userList = new ArrayList<>();
+        User userAccount = new User(username,password);
         
-        File userFile = new File();
-        userFile.setFilePath("src/CSV/MotorPH Employee Data - User Details.csv");
-        userList = userFile.readFile("src/CSV/MotorPH Employee Data - User Details.csv");
-        
-        User userAccount = new User();
-        userAccount.setUserMap(userList);
-        
-        if (!userAccount.isUserAuthenticated(username, password)) {
+        if(!userAccount.isUserAuthenticated(username, password)) {
                 jLabelIncorrectCredentials.setVisible(true);
                 return;
-            }
+        }
         
-//        EmployeeListPage employeeListPage = new EmployeeListPage(userAccount);
-//        employeeListPage.setVisible(true);
-        dispose();           
+        try {
+            if(userAccount.getRoleID().charAt(0) == '1' ) {
+                NonAdmin nonAdminAccount = new NonAdmin(username, password);
+                nonAdminAccount.login(nonAdminAccount);
+                setVisible(false);  
+                return;
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        } 
+        
+        Admin adminAccount = new Admin(username, password);
+        adminAccount.login(adminAccount);
+        setVisible(false);   
             
         
     }//GEN-LAST:event_jButtonLoginActionPerformed
