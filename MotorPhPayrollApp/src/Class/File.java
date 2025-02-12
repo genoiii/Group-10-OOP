@@ -12,32 +12,21 @@ import java.util.*;
  *
  * @author 63909
  */
-public class File {
+public class File {    
     private String fileName;
     private String filePath;
     private ArrayList<String[]> dataFile = null;
     private BufferedReader reader = null;
-    private BufferedWriter writer = null;
     private CSVWriter csvWriter = null;
-
-    public String getFileName() {
-        return fileName;
-    }
-    public void setFileName(String fileName) {
+    
+    public File(String fileName, String filePath) {
         this.fileName = fileName;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-    public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-
-    public ArrayList<String[]> readFile(String filePath){
-        this.filePath = filePath ;            
+    }    
+        
+    public ArrayList<String[]> readFile(){         
         dataFile = new ArrayList<String[]>();
-        String line = "";
+        String line;
 
         try {
             reader = new BufferedReader(new FileReader(this.filePath));
@@ -89,4 +78,14 @@ public class File {
             }    
         }
     }
+    
+    public String getFileName() {
+        return fileName;
+    }
+    public String getFilePath() {
+        return filePath;
+    }
+    public ArrayList<String[]> getDataFile() {
+        return dataFile;
+    } 
 }
