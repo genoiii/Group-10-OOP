@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package App.EMS;
+package Class.EMS;
 
 import java.io.*;
 import java.util.*;
@@ -12,7 +12,7 @@ import Class.File;
  *
  * @author 63909
  */
-public final class Employee {
+public class Employee {
     private ArrayList<String[]> employeeData;
     private HashMap<String,String[]> employeeMap;
     private String employeeID;    

@@ -4,7 +4,9 @@
  */
 package Frame;
 
-import App.UMS.*;
+import Class.UMS.User;
+import Class.UMS.Admin;
+import Class.UMS.NonAdmin;
 /**
  *
  * @author 63909

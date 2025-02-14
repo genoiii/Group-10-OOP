@@ -4,7 +4,7 @@
  */
 package Frame.Admin;
 
-import App.UMS.*;
+import Class.UMS.User;
 
 /**
  *
