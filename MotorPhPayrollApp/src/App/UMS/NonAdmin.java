@@ -4,24 +4,24 @@
  */
 package App.UMS;
 
-import Frame.Admin.*;
+import Frame.NonAdmin.*;
 
 /**
  *
  * @author 63909
  */
-public class Admin extends User {
+public class NonAdmin extends User {
     
-    public Admin(String username, String password) {
+    public NonAdmin(String username, String password) {
         super(username, password);
         setUserMap();
         this.roleID = this.userMap.get(username)[4];
         this.employeeID = this.userMap.get(username)[1];
     }
-    
+
     @Override
-    public void login(User userAccount){        
-        new DashboardPage(userAccount).setVisible(true);         
+    public void login(User userAccount) {
+        new ProfilePage(userAccount).setVisible(true);  
     }
     
     
