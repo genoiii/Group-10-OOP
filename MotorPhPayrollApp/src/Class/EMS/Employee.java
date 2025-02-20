@@ -4,56 +4,17 @@
  */
 package Class.EMS;
 
-import java.io.*;
-import java.util.*;
-import Class.File;
-
 /**
  *
  * @author 63909
  */
-public class Employee {
-    private ArrayList<String[]> employeeData;
-    private HashMap<String,String[]> employeeMap;
-    private String employeeID;    
-    
-    public Employee(String employeeID) {
-        setUserProfile(employeeID);
-    }
-    
-    private void setUserProfile(String employeeID) {
-        this.employeeID = employeeID;
-        setEmployeeMap();
-        setFirstName(this.employeeMap.get(employeeID)[2]);
-        setLastName(this.employeeMap.get(employeeID)[1]);
-    }
-    
-    private void setEmployeeMap() {
-        File userFile = new File("EmployeeFile","src/CSV/MotorPH Employee Data - Employee Details.csv");
-        this.employeeData = userFile.readFile(); // Assigns the input dataFile to userData
-        this.employeeMap = new HashMap<String, String[]>(); // Initializes the userMap
-        
-        // Iterates through each string in userData
-        for (String[] i : this.employeeData){
-            // Puts the divided  row into userMap with the username as the key
-            this.employeeMap.put(i[0],i);
-        }                    
-    }        
-    public HashMap<String, String[]> getEmployeeMap() {
-        return employeeMap;
-    }
-        
-    private double totalHoursWorked, totalAllowance, grossSalary, netSalary;
-    private double sssContri, philhealthContri, pagibigContri;
-    private double totalDeductions, withHTax;
-    private String payPeriod;
 
-    public String getPayPeriod() {
-        return payPeriod;
-    }
-    public void setPayPeriod(String payPeriod) {
-        this.payPeriod = payPeriod;
-    }
+/**
+ * The Employee class represents an employee's personal, government, 
+ * employment, and salary-related information.
+ */
+public class Employee {
+    private String employeeID; // Unique identifier for the employee
     
     //Personal Information
     private String lastName, firstName;
@@ -65,12 +26,89 @@ public class Employee {
     //Employement Information
     private String employmentStatus, position, immediateSupervisor;
 
-    //Rates and Allowances
-    private double basicSalary;
-    private double riceSubsidy, phoneAllowance, clothingAllowance;
-    private double grossSemiMonthlyRate, hourlyRate;
-	
-    //getters and setters
+    // Compensation & Benefits
+    private String basicSalary;
+    private String riceSubsidy, phoneAllowance, clothingAllowance;
+    private String grossSemiMonthlyRate, hourlyRate;
+
+    /**
+     * Constructor that initializes an Employee with an ID.
+     *
+     * @param employeeID The unique employee ID.
+     */
+    public Employee(String employeeID) {
+        this.employeeID = employeeID;
+    }   
+    
+    /**
+     * Constructor that initializes an Employee object from an array of information.
+     * Validates array length to prevent out-of-bounds errors.
+     *
+     * @param information String array containing employee details.
+     *                    Expected format: [employeeID, lastName, firstName, birthday, address, phoneNumber, 
+     *                    sssNumber, philhealthNumber, tinNumber, pagibigNumber, employmentStatus, position, 
+     *                    immediateSupervisor, basicSalary, riceSubsidy, phoneAllowance, clothingAllowance, 
+     *                    grossSemiMonthlyRate, hourlyRate]
+     */
+    public Employee(String[] information) {
+        if (information.length < 19) {
+            throw new IllegalArgumentException("Invalid data: Employee information must have 19 elements.");
+        }
+        setEmployeeID(information[0]);
+        setLastName(information[1]);
+        setFirstName(information[2]);
+        setBirthday(information[3]);
+        setAddress(information[4]);
+        setPhoneNumber(information[5]);
+        setSSSNumber(information[6]);
+        setPhilhealthNumber(information[7]);
+        setTinNumber(information[8]);
+        setPagibigNumber(information[9]);
+        setEmploymentStatus(information[10]);
+        setPosition(information[11]);
+        setImmediateSupervisor(information[12]);
+        setBasicSalary(information[13]);
+        setRiceSubsidy(information[14]);
+        setPhoneAllowance(information[15]);
+        setClothingAllowance(information[16]);
+        setGrossSemiMonthlyRate(information[17]);
+        setHourlyRate(information[18]);
+    }
+    
+    /**
+     * Retrieves all employee information as a String array.
+     *
+     * @return A String array containing employee details.
+     */
+    public String[] getEmployeeInformation() {
+        return new String[] {employeeID,
+                            lastName,
+                            firstName,
+                            birthday,
+                            address,
+                            phoneNumber,
+                            sssNumber,
+                            philhealthNumber,
+                            tinNumber,
+                            pagibigNumber,
+                            employmentStatus,
+                            position,
+                            immediateSupervisor,
+                            basicSalary,
+                            riceSubsidy,
+                            phoneAllowance,
+                            clothingAllowance,
+                            grossSemiMonthlyRate,
+                            hourlyRate
+                            };
+    }
+    
+    // Getter for Employee ID
+    public String getEmployeeID() {
+        return employeeID;
+    }
+    
+    // Getters and Setters for Personal Information
     public String getLastName() {
             return lastName;
     }
@@ -98,7 +136,7 @@ public class Employee {
     public void setAddress(String address) {
             this.address = address;
     }
-
+  
     public String getPhoneNumber() {
             return phoneNumber;
     }
@@ -106,6 +144,7 @@ public class Employee {
             this.phoneNumber = phoneNumber;
     }
 
+    // Getters and Setters for Government Information
     public String getSSSNumber() {
             return sssNumber;
     }
@@ -134,6 +173,7 @@ public class Employee {
             this.pagibigNumber = pagibigNumber;
     }
 
+    // Getters and Setters for Employment Information
     public String getEmploymentStatus() {
             return employmentStatus;
     }
@@ -155,123 +195,54 @@ public class Employee {
             this.immediateSupervisor = immediateSupervisor;
     }
 
-    public double getBasicSalary() {
+    // Getters and Setters for Compensation & Benefits
+    public String getBasicSalary() {
             return basicSalary;
     }
-    public void setBasicSalary(double basicSalary) {
+    public void setBasicSalary(String basicSalary) {
             this.basicSalary = basicSalary;
     }
 
-    public double getRiceSubsidy() {
+    public String getRiceSubsidy() {
             return riceSubsidy;
     }
-    public void setRiceSubsidy(double riceSubsidy) {
+    public void setRiceSubsidy(String riceSubsidy) {
             this.riceSubsidy = riceSubsidy;
     }
 
-    public double getPhoneAllowance() {
+    public String getPhoneAllowance() {
             return phoneAllowance;
     }
-    public void setPhoneAllowance(double phoneAllowance) {
+    public void setPhoneAllowance(String phoneAllowance) {
             this.phoneAllowance = phoneAllowance;
     }
 
-    public double getClothingAllowance() {
+    public String getClothingAllowance() {
             return clothingAllowance;
     }
-    public void setClothingAllowance(double clothingAllowance) {
+    public void setClothingAllowance(String clothingAllowance) {
             this.clothingAllowance = clothingAllowance;
     }
 
-    public double getGrossSemiMonthlyRate() {
+    public String getGrossSemiMonthlyRate() {
             return grossSemiMonthlyRate;
     }
-    public void setGrossSemiMonthlyRate(double grossSemiMonthlyRate) {
+    public void setGrossSemiMonthlyRate(String grossSemiMonthlyRate) {
             this.grossSemiMonthlyRate = grossSemiMonthlyRate;
     }
 
-    public double getHourlyRate() {
+    public String getHourlyRate() {
             return hourlyRate;
     }
-    public void setHourlyRate(double hourlyRate) {
+    public void setHourlyRate(String hourlyRate) {
             this.hourlyRate = hourlyRate;
     }
 
-    public String getEmployeeID() {
-        return employeeID;
-    }
     public void setEmployeeID(String employeeID) {
         this.employeeID = employeeID;
     }
-
-    public double getTotalHoursWorked() {
-        return totalHoursWorked;
-    }
-    public void setTotalHoursWorked(double totalHoursWorked) {
-        this.totalHoursWorked = totalHoursWorked;
-    }
-
-    public double getTotalAllowance() {
-        return totalAllowance;
-    }
-    public void setTotalAllowance(double totalAllowance) {
-        this.totalAllowance = totalAllowance;
-    }
-
-    public double getGrossSalary() {
-        return grossSalary;
-    }
-    public void setGrossSalary(double grossSalary) {
-        this.grossSalary = grossSalary;
-    }
-
-    public double getNetSalary() {
-        return netSalary;
-    }
-
-    public void setNetSalary(double netSalary) {
-        this.netSalary = netSalary;
-    }
-
-    public double getSssContri() {
-        return sssContri;
-    }
-
-    public void setSssContri(double sssContri) {
-        this.sssContri = sssContri;
-    }
-
-    public double getPhilhealthContri() {
-        return philhealthContri;
-    }
-
-    public void setPhilhealthContri(double philhealthContri) {
-        this.philhealthContri = philhealthContri;
-    }
-
-    public double getPagibigContri() {
-        return pagibigContri;
-    }
-
-    public void setPagibigContri(double pagibigContri) {
-        this.pagibigContri = pagibigContri;
-    }
-
-    public double getTotalDeductions() {
-        return totalDeductions;
-    }
-
-    public void setTotalDeductions(double totalDeductions) {
-        this.totalDeductions = totalDeductions;
-    }
-
-    public double getWithHTax() {
-        return withHTax;
-    }
-
-    public void setWithHTax(double withHTax) {
-        this.withHTax = withHTax;
-    }        
+    
+           
 
     
             

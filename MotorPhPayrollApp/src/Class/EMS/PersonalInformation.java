@@ -19,10 +19,19 @@ public class PersonalInformation implements Information {
     private String phoneNumber;
     private String email;
 
-    public PersonalInformation(String firstName, String lastName) {
+    public PersonalInformation(Employee employeeID) {
+        this.employeeID = employeeID;
+    }
+
+    public PersonalInformation(Employee employeeID, String firstName, String lastName, Date birthday, String address, String phoneNumber, String email) {
+        this.employeeID = employeeID;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
+        this.birthday = birthday;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }  
     
     @Override
     public String getInformation() {
