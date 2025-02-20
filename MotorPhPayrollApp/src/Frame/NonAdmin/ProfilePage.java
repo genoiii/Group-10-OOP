@@ -4,8 +4,8 @@
  */
 package Frame.NonAdmin;
 
-import App.UMS.*;
-import App.EMS.*;
+import Class.UMS.User;
+import Class.EMS.Employee;
 
 /**
  *
