@@ -4,26 +4,38 @@
  */
 package Class.UMS;
 
+import Class.*;
 import Frame.NonAdmin.*;
 
 /**
  *
  * @author 63909
  */
+
+/**
+ * Represents a Non-Admin user in the system.
+ * This class extends the User class and provides specific functionality for regular users.
+ */
 public class NonAdmin extends User {
     
-    public NonAdmin(String username, String password) {
-        super(username, password);
-        setUserMap();
-        this.roleID = this.userMap.get(username)[4];
-        this.employeeID = this.userMap.get(username)[1];
+    /**
+     * Constructor to initialize a NonAdmin object with username, password, and user credentials.
+     * @param username The non-admin user's username
+     * @param password The non-admin user's password
+     * @param userInputCredential The Input object containing role ID and employee ID
+     */
+    public NonAdmin(String username, String password, Input userInputCredential) {
+        super(username, password); // Call superclass constructor to set username and password
+        this.roleID = userInputCredential.getRoleID(); // Assign role ID from user input
+        this.employeeID = userInputCredential.getEmployeeID(); // Assign employee ID from user input
     }
-
+    
+    /**
+     * Overrides the login method to authenticate a Non-Admin user and open their profile page.
+     * @param userAccount The Non-Admin user account attempting to log in
+     */
     @Override
     public void login(User userAccount) {
-        new ProfilePage(userAccount).setVisible(true);  
+        new ProfilePage(userAccount).setVisible(true); // Open the profile page for the non-admin user  
     }
-    
-    
-    
 }
