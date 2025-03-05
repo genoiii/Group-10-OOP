@@ -1,6 +1,6 @@
 User #,Employee #,Username,Password,RoleID
-1,10001,AdminGarcia,10001,2
-2,10002,NonAdminLim,10002,1
+1,10001,Garcia,10001,2
+2,10002,Lim,10002,1
 3,10003,Aquino,10003,1
 4,10004,Reyes,10004,1
 5,10005,Hernandez,10005,1
