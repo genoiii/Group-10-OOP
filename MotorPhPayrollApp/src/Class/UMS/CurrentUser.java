@@ -8,6 +8,9 @@ package Class.UMS;
  *
  * @author 63909
  */
-public class Access {
-    
+public class CurrentUser extends User {
+    // Constructor for CurrentUser
+    public CurrentUser(String employeeID, String username) {
+        super(username, employeeID); // Call the super constructor from User class
+    }
 }

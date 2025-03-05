@@ -6,13 +6,11 @@ package Frame;
 
 import Class.*;
 import Class.UMS.*;
-import Frame.NonAdmin.ProfilePage;
 /**
  *
  * @author Charm
  */
 //import App.UMS.Admin;
-import javax.swing.JOptionPane;
 
 public class LoginPage extends javax.swing.JFrame {
 
@@ -49,12 +47,6 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel1Username.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1Username.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1Username.setText("Username:");
-
-        jTextField1Username.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1UsernameActionPerformed(evt);
-            }
-        });
 
         jLabel3Password.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3Password.setForeground(new java.awt.Color(255, 255, 255));
@@ -174,37 +166,42 @@ public class LoginPage extends javax.swing.JFrame {
         // Retrieve the entered username and password
         String username = jTextField1Username.getText();
         String password = jTextField2Password.getText();
-        
+
         // Create an Input object to validate user credentials
         Input userInputCredential = new Input();
-        
+
         // Check if the user is authenticated
         if (!userInputCredential.isUserAuthenticated(username, password)){
             jLabelIncorrectCredentials.setVisible(true); // Display error message if authentication fails
             return; // Exit the method to prevent further execution
         }
 
+        // Retrieve the employeeID and roleID for the logged-in user
+        String employeeID = userInputCredential.getEmployeeID();
+        String roleID = userInputCredential.getRoleID();
+        
+        // Create a User object for storing logged-in user details
+        User loggedInUser = new CurrentUser(employeeID, username); 
+        User.setCurrentUser(loggedInUser); 
+        
+
         // Check if the authenticated user is a Non-Admin
         if (!userInputCredential.isAdmin()) {
-            NonAdmin nonAdmin = new NonAdmin(username, password, userInputCredential); // Create NonAdmin user
-            new ProfilePage(nonAdmin).setVisible(true); // Open the Profile Page
+            // Create a NonAdmin user
+            NonAdmin nonAdmin = new NonAdmin(username, password, employeeID, roleID); 
+            nonAdmin.setCurrentUser(loggedInUser); // Set the User object to the NonAdmin 
+            // Pass NonAdmin user object to EmployeeDashboard
+            new EmployeeDashboard(nonAdmin).setVisible(true); // Open the Self Service Portal Page
             this.setVisible(false); // Close the LoginPage
             return; // Exit the method
         }
 
         // If user is an Admin, create an Admin object and redirect to the Company Home Page
-        Admin admin = new Admin(username, password, userInputCredential); // Create Admin user
+        Admin admin = new Admin(username, password, employeeID, roleID); // Create Admin user
+        admin.setCurrentUser(loggedInUser); // Set the User object to the Admin 
         new CompanyHomePage(admin).setVisible(true); // Open the Company Home Page
         this.setVisible(false); // Close the LoginPage
-
     }//GEN-LAST:event_jButton1LogInActionPerformed
-
-    private void jTextField1UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1UsernameActionPerformed
-//        String username = jTextField1Username.getText();
-//        if (username.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Username cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-    }//GEN-LAST:event_jTextField1UsernameActionPerformed
 
     /**
      * @param args the command line arguments

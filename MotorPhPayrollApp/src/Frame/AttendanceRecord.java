@@ -39,6 +39,7 @@ public class AttendanceRecord extends javax.swing.JFrame {
         jButton4Payroll = new javax.swing.JButton();
         jButton6LogOut = new javax.swing.JButton();
         jButton3SelfServicePortal = new javax.swing.JButton();
+        jButton4CompanyPortal = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1EmployeeList = new javax.swing.JTable();
         jButton1SearchEmployee = new javax.swing.JButton();
@@ -68,19 +69,19 @@ public class AttendanceRecord extends javax.swing.JFrame {
         jButton1EmployeeInformation.setBackground(new java.awt.Color(0, 102, 153));
         jButton1EmployeeInformation.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1EmployeeInformation.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1EmployeeInformation.setText("Employee Information");
+        jButton1EmployeeInformation.setText("Request Center");
         jButton1EmployeeInformation.setBorder(null);
 
         jButton3EmployeeRequest.setBackground(new java.awt.Color(0, 102, 153));
         jButton3EmployeeRequest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3EmployeeRequest.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3EmployeeRequest.setText("Employee Request");
+        jButton3EmployeeRequest.setText("Attendance Record");
         jButton3EmployeeRequest.setBorder(null);
 
         jButton4Payroll.setBackground(new java.awt.Color(0, 102, 153));
         jButton4Payroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton4Payroll.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4Payroll.setText("Payroll");
+        jButton4Payroll.setText("Payslip");
         jButton4Payroll.setBorder(null);
 
         jButton6LogOut.setBackground(new java.awt.Color(0, 102, 153));
@@ -97,8 +98,14 @@ public class AttendanceRecord extends javax.swing.JFrame {
         jButton3SelfServicePortal.setBackground(new java.awt.Color(0, 102, 153));
         jButton3SelfServicePortal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3SelfServicePortal.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3SelfServicePortal.setText("Self Service Portal");
+        jButton3SelfServicePortal.setText("Time Clock");
         jButton3SelfServicePortal.setBorder(null);
+
+        jButton4CompanyPortal.setBackground(new java.awt.Color(0, 102, 153));
+        jButton4CompanyPortal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton4CompanyPortal.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4CompanyPortal.setText("Company Portal");
+        jButton4CompanyPortal.setBorder(null);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,7 +118,8 @@ public class AttendanceRecord extends javax.swing.JFrame {
                     .addComponent(jButton3EmployeeRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jButton4Payroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jButton6LogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+                    .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jButton4CompanyPortal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -125,6 +133,8 @@ public class AttendanceRecord extends javax.swing.JFrame {
                 .addComponent(jButton1EmployeeInformation)
                 .addGap(35, 35, 35)
                 .addComponent(jButton4Payroll)
+                .addGap(34, 34, 34)
+                .addComponent(jButton4CompanyPortal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton6LogOut)
                 .addContainerGap())
@@ -293,6 +303,7 @@ public class AttendanceRecord extends javax.swing.JFrame {
     private javax.swing.JButton jButton1SearchEmployee;
     private javax.swing.JButton jButton3EmployeeRequest;
     private javax.swing.JButton jButton3SelfServicePortal;
+    private javax.swing.JButton jButton4CompanyPortal;
     private javax.swing.JButton jButton4Payroll;
     private javax.swing.JButton jButton6LogOut;
     private com.toedter.calendar.JDateChooser jDateChooser1;
