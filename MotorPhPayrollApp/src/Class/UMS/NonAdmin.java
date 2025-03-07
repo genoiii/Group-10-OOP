@@ -24,17 +24,35 @@ public class NonAdmin extends User {
      * @param password The non-admin user's password
      * @param userInputCredential The Input object containing role ID and employee ID
      */
-    public NonAdmin(String username, String password, String employeeID, String roleID) {
-        super(username, password); // Call the parent constructor for username and password
-        this.employeeID = employeeID; // Set the employee ID
-        this.roleID = roleID; // Set the role ID
+    public NonAdmin(String username, String password){
+        super(username, password);
     }
-       
-    /**
-     * Overrides the login method to authenticate a Non-Admin user and open their profile page.
-     * @param userAccount The Non-Admin user account attempting to log in
-     */
-    public void login(User userAccount) {
-        new EmployeeDashboard(userAccount).setVisible(true); // Open the EmployeeDashboard page for the non-admin user  
+    
+    public NonAdmin(User nonAdmin){
+        this.username = nonAdmin.getUsername();
+        this.password = nonAdmin.getPassword();
+        this.employeeID = nonAdmin.getEmployeeID();
+        this.roleID = nonAdmin.getRoleID();
     }
+    
+    public NonAdmin(Input userInputCredential) {        
+        super(userInputCredential);
+//        this.username = userInputCredential.getUsername();
+//        this.password = userInputCredential.getPassword();
+//        this.roleID = userInputCredential.getRoleID(); // Assign role ID from user input
+//        this.employeeID = userInputCredential.getEmployeeID(); // Assign employee ID from user input
+    }
+    
+    public static void login(User user){        
+        Access.accessProfilePage(user); // Open the dashboard page for the admin
+    }
+    
+//    /**
+//     * Overrides the login method to authenticate a Non-Admin user and open their profile page.
+//     * @param userAccount The Non-Admin user account attempting to log in
+//     */
+//    @Override
+//    public void login(User userAccount) {
+//        new ProfilePage(userAccount).setVisible(true); // Open the profile page for the non-admin user  
+//    }
 }

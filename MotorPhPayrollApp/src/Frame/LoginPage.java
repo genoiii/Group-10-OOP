@@ -34,11 +34,11 @@ public class LoginPage extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1Username = new javax.swing.JLabel();
         jTextField1Username = new javax.swing.JTextField();
-        jTextField2Password = new javax.swing.JTextField();
         jLabel3Password = new javax.swing.JLabel();
         jButton1LogIn = new javax.swing.JButton();
         jButton2ForgotPassword = new javax.swing.JButton();
         jLabelIncorrectCredentials = new javax.swing.JLabel();
+        jPasswordFieldPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,11 +89,11 @@ public class LoginPage extends javax.swing.JFrame {
                                         .addComponent(jLabel3Password, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(10, 10, 10)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField2Password, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                                    .addComponent(jTextField1Username, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(6, 6, 6)
                                         .addComponent(jLabelIncorrectCredentials))
-                                    .addComponent(jTextField1Username)))))
+                                    .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.Alignment.TRAILING)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(129, 129, 129)
                         .addComponent(jButton1LogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -108,15 +108,15 @@ public class LoginPage extends javax.swing.JFrame {
                     .addComponent(jTextField1Username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3Password))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel3Password)
+                    .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelIncorrectCredentials)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2ForgotPassword)
                 .addGap(28, 28, 28)
                 .addComponent(jButton1LogIn)
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -137,70 +137,43 @@ public class LoginPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1LogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1LogInActionPerformed
-        //        System.out.println("Login button clicked!");  // Debugging line to confirm the method is triggered.
-        //
-        //    // Retrieve the entered username and password
-        //    String username = jTextField1Username.getText();
-        //    String password = jTextField2Password.getText();
-        //
-        //    // Validate the input fields
-        //    if (username.isEmpty() || password.isEmpty()) {
-            //        JOptionPane.showMessageDialog(this, "Both fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
-            //        return; // Prevent further action if fields are empty
-            //    }
-        //
-        //    // Create an Admin object
-        //    Admin admin = new Admin(username, password);
-        //
-        //    // Validate the user credentials
-        //    if (admin.isUserAuthenticated(username, password)) {
-            //    // If login is successful, open the CompanyHomePage
-            //        new CompanyHomePage(admin).setVisible(true);
-            //        this.setVisible(false); // Close the LoginPage
-            //    } else {
-            //        // If authentication fails, show an error message
-            //        System.out.println("Authentication failed, showing error dialog."); // Debugging line to check if it's reaching here
-            //        JOptionPane.showMessageDialog(this, "Invalid username or password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
-            //    }
-
         // Retrieve the entered username and password
         String username = jTextField1Username.getText();
-        String password = jTextField2Password.getText();
-
+        String password = jPasswordFieldPassword.getText();
+        
         // Create an Input object to validate user credentials
         Input userInputCredential = new Input();
-
-        // Check if the user is authenticated
-        if (!userInputCredential.isUserAuthenticated(username, password)){
-            jLabelIncorrectCredentials.setVisible(true); // Display error message if authentication fails
-            return; // Exit the method to prevent further execution
-        }
-
-        // Retrieve the employeeID and roleID for the logged-in user
-        String employeeID = userInputCredential.getEmployeeID();
-        String roleID = userInputCredential.getRoleID();
+        User user = new User();
+        user = userInputCredential.isAuthenticated(username, password);
         
-        // Create a User object for storing logged-in user details
-        User loggedInUser = new CurrentUser(employeeID, username); 
-        User.setCurrentUser(loggedInUser); 
-        
+        if (user != null) {
+            JOptionPane.showMessageDialog(this, "Login Successful!\nWelcome, " + user.getUsername());
+            dispose(); // Close login window
 
-        // Check if the authenticated user is a Non-Admin
-        if (!userInputCredential.isAdmin()) {
-            // Create a NonAdmin user
-            NonAdmin nonAdmin = new NonAdmin(username, password, employeeID, roleID); 
-            nonAdmin.setCurrentUser(loggedInUser); // Set the User object to the NonAdmin 
-            // Pass NonAdmin user object to EmployeeDashboard
-            new EmployeeDashboard(nonAdmin).setVisible(true); // Open the Self Service Portal Page
-            this.setVisible(false); // Close the LoginPage
-            return; // Exit the method
+            // Open the appropriate dashboard
+            if (user instanceof Admin) {
+                Admin.login(user);
+            } else if (user instanceof NonAdmin) {
+                NonAdmin.login(user);
+            }
+            this.setVisible(false); // Close the LoginPage  
+            return;
         }
+        
+        jLabelIncorrectCredentials.setVisible(true); // Display error message if authentication fails
+//            JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+        
+//        // Check if the user is authenticated
+//        if (!userInputCredential.isAuthenticated(username, password)){
+//            jLabelIncorrectCredentials.setVisible(true); // Display error message if authentication fails
+//            return; // Exit the method to prevent further execution
+//        }
 
-        // If user is an Admin, create an Admin object and redirect to the Company Home Page
-        Admin admin = new Admin(username, password, employeeID, roleID); // Create Admin user
-        admin.setCurrentUser(loggedInUser); // Set the User object to the Admin 
-        new CompanyHomePage(admin).setVisible(true); // Open the Company Home Page
-        this.setVisible(false); // Close the LoginPage
+//        User user = new User(userInputCredential);
+//        user.login(userInputCredential.isAdmin());
+        
+        
+            
     }//GEN-LAST:event_jButton1LogInActionPerformed
 
     /**
@@ -241,7 +214,7 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3Password;
     private javax.swing.JLabel jLabelIncorrectCredentials;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordFieldPassword;
     private javax.swing.JTextField jTextField1Username;
-    private javax.swing.JTextField jTextField2Password;
     // End of variables declaration//GEN-END:variables
 }
