@@ -4,22 +4,38 @@
  */
 package Frame;
 
-import com.toedter.calendar.JDateChooser;
-import javax.swing.*;
-import java.awt.*;
+import Class.PPS.*;
+import Class.PromptComboBoxRenderer;
+import Class.TAT.*;
+import Class.UMS.Access;
+import Class.UMS.Admin;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Charm
  */
-public class AttendanceRecord extends javax.swing.JFrame {
-
+public class AttendanceBiweekly extends javax.swing.JFrame {
+    PayrollService payPeriodList = new PayrollService();
+    Admin admin;
+            
     /**
      * Creates new form AttendanceRecord
-     */
-    public AttendanceRecord() {
+     */    
+    public AttendanceBiweekly() {
         initComponents();
+        jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
+        jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
+        jComboBoxAttendancePeriod.setSelectedIndex(-1);
         
+    }
+    
+    public AttendanceBiweekly(Admin admin) {
+        initComponents();
+        this.admin = admin;
+        jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
+        jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
+        jComboBoxAttendancePeriod.setSelectedIndex(-1);
    
     }
 
@@ -39,13 +55,11 @@ public class AttendanceRecord extends javax.swing.JFrame {
         jButton4Payroll = new javax.swing.JButton();
         jButton6LogOut = new javax.swing.JButton();
         jButton3SelfServicePortal = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1EmployeeList = new javax.swing.JTable();
-        jButton1SearchEmployee = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jDateChooser1d2DateFrom = new com.toedter.calendar.JDateChooser();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jButton4Attendance = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableBiweeklyAttendace = new javax.swing.JTable();
+        jLabelAttendancePeriod = new javax.swing.JLabel();
+        jComboBoxAttendancePeriod = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,18 +84,33 @@ public class AttendanceRecord extends javax.swing.JFrame {
         jButton1EmployeeInformation.setForeground(new java.awt.Color(255, 255, 255));
         jButton1EmployeeInformation.setText("Employee Information");
         jButton1EmployeeInformation.setBorder(null);
+        jButton1EmployeeInformation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1EmployeeInformationActionPerformed(evt);
+            }
+        });
 
         jButton3EmployeeRequest.setBackground(new java.awt.Color(0, 102, 153));
         jButton3EmployeeRequest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3EmployeeRequest.setForeground(new java.awt.Color(255, 255, 255));
         jButton3EmployeeRequest.setText("Employee Request");
         jButton3EmployeeRequest.setBorder(null);
+        jButton3EmployeeRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3EmployeeRequestActionPerformed(evt);
+            }
+        });
 
         jButton4Payroll.setBackground(new java.awt.Color(0, 102, 153));
         jButton4Payroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton4Payroll.setForeground(new java.awt.Color(255, 255, 255));
         jButton4Payroll.setText("Payroll");
         jButton4Payroll.setBorder(null);
+        jButton4Payroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4PayrollActionPerformed(evt);
+            }
+        });
 
         jButton6LogOut.setBackground(new java.awt.Color(0, 102, 153));
         jButton6LogOut.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
@@ -99,6 +128,22 @@ public class AttendanceRecord extends javax.swing.JFrame {
         jButton3SelfServicePortal.setForeground(new java.awt.Color(255, 255, 255));
         jButton3SelfServicePortal.setText("Self Service Portal");
         jButton3SelfServicePortal.setBorder(null);
+        jButton3SelfServicePortal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3SelfServicePortalActionPerformed(evt);
+            }
+        });
+
+        jButton4Attendance.setBackground(new java.awt.Color(0, 102, 153));
+        jButton4Attendance.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton4Attendance.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4Attendance.setText("Attendance");
+        jButton4Attendance.setBorder(null);
+        jButton4Attendance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4AttendanceActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,7 +156,8 @@ public class AttendanceRecord extends javax.swing.JFrame {
                     .addComponent(jButton3EmployeeRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jButton4Payroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jButton6LogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+                    .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jButton4Attendance, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -119,80 +165,44 @@ public class AttendanceRecord extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(87, 87, 87)
                 .addComponent(jButton3SelfServicePortal)
-                .addGap(36, 36, 36)
+                .addGap(30, 30, 30)
                 .addComponent(jButton3EmployeeRequest)
-                .addGap(37, 37, 37)
+                .addGap(30, 30, 30)
                 .addComponent(jButton1EmployeeInformation)
-                .addGap(35, 35, 35)
+                .addGap(30, 30, 30)
                 .addComponent(jButton4Payroll)
+                .addGap(30, 30, 30)
+                .addComponent(jButton4Attendance)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton6LogOut)
                 .addContainerGap())
         );
 
-        jTable1EmployeeList.setModel(new javax.swing.table.DefaultTableModel(
+        jTableBiweeklyAttendace.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Employee ID", "Date", "Log In", "Log Out"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        ));
+        jTableBiweeklyAttendace.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableBiweeklyAttendaceMouseClicked(evt);
             }
         });
-        jTable1EmployeeList.setColumnSelectionAllowed(true);
-        jTable1EmployeeList.setShowGrid(true);
-        jTable1EmployeeList.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1EmployeeList);
-        jTable1EmployeeList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (jTable1EmployeeList.getColumnModel().getColumnCount() > 0) {
-            jTable1EmployeeList.getColumnModel().getColumn(0).setResizable(false);
-            jTable1EmployeeList.getColumnModel().getColumn(1).setResizable(false);
-            jTable1EmployeeList.getColumnModel().getColumn(2).setResizable(false);
-            jTable1EmployeeList.getColumnModel().getColumn(3).setResizable(false);
-        }
+        jScrollPane2.setViewportView(jTableBiweeklyAttendace);
 
-        jButton1SearchEmployee.setText("Search ");
-        jButton1SearchEmployee.addActionListener(new java.awt.event.ActionListener() {
+        jLabelAttendancePeriod.setText("Attendance Period");
+
+        jComboBoxAttendancePeriod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1SearchEmployeeActionPerformed(evt);
+                jComboBoxAttendancePeriodActionPerformed(evt);
             }
         });
-
-        jLabel1.setText("From:");
-
-        jLabel2.setText("To:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -201,20 +211,17 @@ public class AttendanceRecord extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(169, 169, 169)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+                        .addComponent(jLabelAttendancePeriod)
+                        .addGap(29, 29, 29)
+                        .addComponent(jComboBoxAttendancePeriod, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(544, 544, 544))
+                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1d2DateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1SearchEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(213, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,34 +231,86 @@ public class AttendanceRecord extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1)
-                                .addComponent(jDateChooser1d2DateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(2, 2, 2)))
-                            .addComponent(jButton1SearchEmployee))
-                        .addGap(19, 19, 19)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 21, Short.MAX_VALUE))))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelAttendancePeriod)
+                            .addComponent(jComboBoxAttendancePeriod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1SearchEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1SearchEmployeeActionPerformed
-
-    }//GEN-LAST:event_jButton1SearchEmployeeActionPerformed
-
     private void jButton6LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6LogOutActionPerformed
         LoginPage loginPage = new LoginPage();
         loginPage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton6LogOutActionPerformed
+
+    private void jComboBoxAttendancePeriodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAttendancePeriodActionPerformed
+        if (jComboBoxAttendancePeriod.getSelectedIndex() < 0 || jComboBoxAttendancePeriod.getSelectedItem() == null) {
+            return;
+        }
+        
+        String[] dates = jComboBoxAttendancePeriod.getSelectedItem().toString().split(" : ");
+        String startDate = dates[0];
+        String endDate = dates[1];
+        
+        PayPeriod selectedPayPeriod = new PayPeriod(startDate, endDate);
+        AttendanceService dtrManager = new AttendanceService();
+        jTableBiweeklyAttendace.setModel(dtrManager.getProcessedAttendanceTableModel(selectedPayPeriod));
+        
+    }//GEN-LAST:event_jComboBoxAttendancePeriodActionPerformed
+
+    private void jButton4PayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4PayrollActionPerformed
+        Access.accessPayrollList(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton4PayrollActionPerformed
+
+    private void jButton3SelfServicePortalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3SelfServicePortalActionPerformed
+        Access.accessProfilePage(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton3SelfServicePortalActionPerformed
+
+    private void jButton4AttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4AttendanceActionPerformed
+        Access.accessEmployeeInformation(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton4AttendanceActionPerformed
+
+    private void jButton1EmployeeInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1EmployeeInformationActionPerformed
+        Access.accessEmployeeInformation(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1EmployeeInformationActionPerformed
+
+    private void jButton3EmployeeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3EmployeeRequestActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3EmployeeRequestActionPerformed
+
+    private void jTableBiweeklyAttendaceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableBiweeklyAttendaceMouseClicked
+        // Ensure a record is selected before proceeding
+        if (!isSelectRecord()) {
+            return;
+        }
+        
+        if (jComboBoxAttendancePeriod.getSelectedIndex() < 0 || jComboBoxAttendancePeriod.getSelectedItem() == null) {
+            return;
+        }
+        
+        String[] dates = jComboBoxAttendancePeriod.getSelectedItem().toString().split(" : ");
+        String startDate = dates[0];
+        String endDate = dates[1];
+        
+        PayPeriod selectedPayPeriod = new PayPeriod(startDate, endDate);
+        
+        int rowIndex = jTableBiweeklyAttendace.getSelectedRow(); // Get selected row index
+        String employeeID = jTableBiweeklyAttendace.getValueAt(rowIndex, 0).toString(); // Retrieve employee ID
+        
+        Access.accessDTR(this.admin, employeeID, selectedPayPeriod);
+        this.setVisible(false);
+    }//GEN-LAST:event_jTableBiweeklyAttendaceMouseClicked
 
     /**
      * @param args the command line arguments
@@ -283,25 +342,38 @@ public class AttendanceRecord extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AttendanceRecord().setVisible(true);
+                new AttendanceBiweekly().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1EmployeeInformation;
-    private javax.swing.JButton jButton1SearchEmployee;
     private javax.swing.JButton jButton3EmployeeRequest;
     private javax.swing.JButton jButton3SelfServicePortal;
+    private javax.swing.JButton jButton4Attendance;
     private javax.swing.JButton jButton4Payroll;
     private javax.swing.JButton jButton6LogOut;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser1d2DateFrom;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox<String> jComboBoxAttendancePeriod;
+    private javax.swing.JLabel jLabelAttendancePeriod;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1EmployeeList;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTableBiweeklyAttendace;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Validates if exactly one employee record is selected in the table.
+     * Displays an error message if no or multiple selections are made.
+     *
+     * @return true if one record is selected, false otherwise
+     */
+    private boolean isSelectRecord() {
+        if((jTableBiweeklyAttendace.getSelectedRowCount() != 1)) { // Ensure exactly one row is selected
+            JOptionPane.showMessageDialog(null, "Please select 1 Employee Record");
+            return false;            
+        }
+        return true;
+    }
+
 }

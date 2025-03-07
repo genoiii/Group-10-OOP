@@ -9,7 +9,9 @@ import java.io.*;
 import java.util.*;
 import java.util.function.Function;
 
-// Enum representing different CSV files used in the system
+/**
+ * Enum representing different CSV file paths.
+ */
 public enum CsvFile {
     // Enum constants representing different CSV file paths
     USER("src/CSVFiles/MotorPH Employee Data - User Details.csv"),

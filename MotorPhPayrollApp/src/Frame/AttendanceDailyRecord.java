@@ -4,39 +4,82 @@
  */
 package Frame;
 
-import CSVFileManager.*;
 import Class.EMS.*;
+import Class.PPS.PayPeriod;
+import Class.PPS.PayrollService;
+import Class.PromptComboBoxRenderer;
+import Class.TAT.*;
 import Class.UMS.*;
-import java.util.*;
-import javax.swing.JOptionPane;
+import java.util.List;
+
 /**
  *
  * @author Charm
  */
-public class EmployeeInformation extends javax.swing.JFrame {
-    List<Employee> employeeList = CsvFile.EMPLOYEEINFORMATION.readFile(Employee::new);            
-    Admin admin;    
+public class AttendanceDailyRecord extends javax.swing.JFrame {
     EmployeeService employeeService = new EmployeeService();
+    Employee employee, employeeID;
+    PayrollService payPeriodList = new PayrollService();
+    User user;
+    String[] defaultResults = {"0", "0", "0"};
     
     /**
-     * Creates new form EmployeeInformation
-     * Initializes the frame and populates the employee table.
-     */       
-    public EmployeeInformation() { 
+     * Creates new form AttendanceRecord
+     */
+    public AttendanceDailyRecord() {
         initComponents();
-        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Populate table with employee data
+        jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
+        jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
+        jComboBoxAttendancePeriod.setSelectedIndex(-1);
+   
     }
     
-    /**
-     * Constructor that takes an admin user as a parameter.
-     * This could be used to manage role-based access control in the future.
-     *
-     * @param admin The logged-in admin userS
-     */
-    public EmployeeInformation(Admin admin) {
+    public AttendanceDailyRecord(Employee employee) {
         initComponents();
-        this.admin = admin;
-        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Populate table with employee data
+        this.employeeID = employeeService.getEmployeeInformation(employee.getEmployeeID());
+        jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
+        jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
+        jComboBoxAttendancePeriod.setSelectedIndex(-1);
+        
+        jLabelEmployeeName.setText(employee.getFirstName() + " " + employee.getLastName());        
+        setResultFields(defaultResults);
+   
+    }
+    
+    public AttendanceDailyRecord(Admin admin, Employee employee) {
+        initComponents();
+        this.employeeID = employeeService.getEmployeeInformation(employee.getEmployeeID());
+        this.user = admin;
+        jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
+        jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
+        jComboBoxAttendancePeriod.setSelectedIndex(-1);
+        
+        jLabelEmployeeName.setText(employee.getFirstName() + " " + employee.getLastName());
+        setResultFields(defaultResults);
+    }
+    
+    public AttendanceDailyRecord(Admin admin, String employeeID, PayPeriod selectedPayPeriod) {
+        initComponents();
+        this.employeeID = employeeService.getEmployeeInformation(employeeID);
+        this.employee = employeeService.getEmployeeInformation(employeeID);
+        this.user = admin;
+        jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
+        jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
+        jComboBoxAttendancePeriod.setSelectedIndex(-1);
+        
+        jLabelEmployeeName.setText(employee.getFirstName() + " " + employee.getLastName());
+        
+        AttendanceService dtrManager = new AttendanceService();
+        jTableDailyAttendanceList.setModel(dtrManager.getAttendanceTableModel(employee, selectedPayPeriod));
+        
+        List<DailyAttendance> employeeAttendance = dtrManager.getFilteredDailyAttendance(employee, selectedPayPeriod);
+        
+        double payableHours = AttendanceCalculator.calculatePayableHours(employeeAttendance);
+        double regularHours = AttendanceCalculator.calculateRegularWorkedHours(employeeAttendance);
+        double overtime = AttendanceCalculator.calculateApprovedOverTimeHours(employeeAttendance);
+        
+        String[] results = {String.valueOf(payableHours),String.valueOf(regularHours),String.valueOf(overtime)};
+        setResultFields(results); 
     }
 
     /**
@@ -57,11 +100,15 @@ public class EmployeeInformation extends javax.swing.JFrame {
         jButton3SelfServicePortal = new javax.swing.JButton();
         jButton4Attendance = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1EmployeeList = new javax.swing.JTable();
-        jButton1AddNewRecord = new javax.swing.JButton();
-        jButton1ViewEmployeeDetails = new javax.swing.JButton();
-        jButton2DeleteEmployeeRecord = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jTableDailyAttendanceList = new javax.swing.JTable();
+        jComboBoxAttendancePeriod = new javax.swing.JComboBox<>();
+        jLabelEmployeeName = new javax.swing.JLabel();
+        jLabelTotalHours = new javax.swing.JLabel();
+        jLabelTotalHoursResult = new javax.swing.JLabel();
+        jLabelRegular = new javax.swing.JLabel();
+        jLabelRegularResult = new javax.swing.JLabel();
+        jLabelOvertime = new javax.swing.JLabel();
+        jLabelOvertimeResult = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -154,7 +201,7 @@ public class EmployeeInformation extends javax.swing.JFrame {
                     .addComponent(jButton4Payroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jButton6LogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jButton4Attendance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+                    .addComponent(jButton4Attendance, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -175,87 +222,69 @@ public class EmployeeInformation extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTable1EmployeeList.setModel(new javax.swing.table.DefaultTableModel(
+        jTableDailyAttendanceList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Employee ID", "Last Name", "First Name", "Birthdate", "Address", "Phone Number"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
+        ));
+        jTableDailyAttendanceList.setShowGrid(true);
+        jTableDailyAttendanceList.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTableDailyAttendanceList);
+        jTableDailyAttendanceList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1EmployeeList.setShowGrid(true);
-        jTable1EmployeeList.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1EmployeeList);
-        jTable1EmployeeList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (jTable1EmployeeList.getColumnModel().getColumnCount() > 0) {
-            jTable1EmployeeList.getColumnModel().getColumn(0).setResizable(false);
-            jTable1EmployeeList.getColumnModel().getColumn(1).setResizable(false);
-            jTable1EmployeeList.getColumnModel().getColumn(2).setResizable(false);
-            jTable1EmployeeList.getColumnModel().getColumn(3).setResizable(false);
-            jTable1EmployeeList.getColumnModel().getColumn(4).setResizable(false);
-            jTable1EmployeeList.getColumnModel().getColumn(5).setResizable(false);
-        }
-
-        jButton1AddNewRecord.setText("Add New Record");
-        jButton1AddNewRecord.addActionListener(new java.awt.event.ActionListener() {
+        jComboBoxAttendancePeriod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1AddNewRecordActionPerformed(evt);
+                jComboBoxAttendancePeriodActionPerformed(evt);
             }
         });
 
-        jButton1ViewEmployeeDetails.setText("View Employee Details");
-        jButton1ViewEmployeeDetails.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ViewEmployeeDetailsActionPerformed(evt);
-            }
-        });
+        jLabelEmployeeName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabelEmployeeName.setText("EmployeeName");
 
-        jButton2DeleteEmployeeRecord.setText("Delete Employee Record");
-        jButton2DeleteEmployeeRecord.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2DeleteEmployeeRecordActionPerformed(evt);
-            }
-        });
+        jLabelTotalHours.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelTotalHours.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelTotalHours.setText("Total Hours");
 
-        jButton1.setText("View Attendance");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jLabelTotalHoursResult.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelTotalHoursResult.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelTotalHoursResult.setText("Total Hours");
+
+        jLabelRegular.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelRegular.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelRegular.setText("Regular");
+
+        jLabelRegularResult.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelRegularResult.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelRegularResult.setText("Total Hours");
+
+        jLabelOvertime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelOvertime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelOvertime.setText("Overtime");
+
+        jLabelOvertimeResult.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelOvertimeResult.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelOvertimeResult.setText("Overtime");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -264,20 +293,24 @@ public class EmployeeInformation extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 878, Short.MAX_VALUE)
+                    .addComponent(jComboBoxAttendancePeriod, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelEmployeeName, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1AddNewRecord)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabelTotalHours, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelRegular, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelOvertime, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(59, 59, 59)
-                        .addComponent(jButton1ViewEmployeeDetails)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2DeleteEmployeeRecord)))
-                .addContainerGap())
+                        .addComponent(jLabelTotalHoursResult, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelRegularResult, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelOvertimeResult, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 838, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,110 +318,79 @@ public class EmployeeInformation extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1AddNewRecord)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabelEmployeeName)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBoxAttendancePeriod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelTotalHours)
+                            .addComponent(jLabelRegular)
+                            .addComponent(jLabelOvertime))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1ViewEmployeeDetails)
-                            .addComponent(jButton2DeleteEmployeeRecord)
-                            .addComponent(jButton1))
-                        .addContainerGap())
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabelTotalHoursResult)
+                            .addComponent(jLabelRegularResult)
+                            .addComponent(jLabelOvertimeResult))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 143, Short.MAX_VALUE))))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1AddNewRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1AddNewRecordActionPerformed
-        Access.accessViewEmployeeDetails(this.admin); 
-        this.setVisible(false); // Hide the current frame
-    }//GEN-LAST:event_jButton1AddNewRecordActionPerformed
-    
-    private void jButton1ViewEmployeeDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ViewEmployeeDetailsActionPerformed
-        // Ensure a record is selected before proceeding
-        if (!isSelectRecord()) {
-            return;
-        }
-        
-        int rowIndex = jTable1EmployeeList.getSelectedRow(); // Get selected row index
-        String employeeID = jTable1EmployeeList.getValueAt(rowIndex, 0).toString(); // Retrieve employee ID
-        
-        // Open the employee details view with the selected employee's data
-        Access.accessViewEmployeeDetails(this.admin, employeeID);
-        this.setVisible(false); // Hide the current frame
-    }//GEN-LAST:event_jButton1ViewEmployeeDetailsActionPerformed
-
     private void jButton6LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6LogOutActionPerformed
-        admin.logout(this);
+        LoginPage loginPage = new LoginPage();
+        loginPage.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton6LogOutActionPerformed
 
-    private void jButton2DeleteEmployeeRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2DeleteEmployeeRecordActionPerformed
-        // Ensure a record is selected before proceeding
-        if (!isSelectRecord()) {
+    private void jComboBoxAttendancePeriodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAttendancePeriodActionPerformed
+        if (jComboBoxAttendancePeriod.getSelectedIndex() < 0 || jComboBoxAttendancePeriod.getSelectedItem() == null) {
             return;
         }
         
-        // Show confirmation dialog before deleting the record
-        int result = JOptionPane.showConfirmDialog(null, "Are you sure to delete the Employee Record", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.NO_OPTION) {
-                return; // Cancel the deletion if the user selects "No"
-            }
-            
-        int rowIndex = jTable1EmployeeList.getSelectedRow(); // Get selected row index
-        String employeeID = jTable1EmployeeList.getValueAt(rowIndex, 0).toString(); // Retrieve Employee ID
-                      
-        jTable1EmployeeList.removeAll();// Clear the table model before updating the data
+        String[] dates = jComboBoxAttendancePeriod.getSelectedItem().toString().split(" : ");
+        String startDate = dates[0];
+        String endDate = dates[1];
         
-        employeeService.deleteEmployee(employeeID);
+        PayPeriod selectedPayPeriod = new PayPeriod(startDate, endDate);
         
-        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Refresh the table model with the updated data
+        AttendanceService dtrManager = new AttendanceService();
+        jTableDailyAttendanceList.setModel(dtrManager.getAttendanceTableModel(employeeID, selectedPayPeriod));
         
-        JOptionPane.showMessageDialog(null, "Successfully Deleted"); // Notify user of successful deletion
-    }//GEN-LAST:event_jButton2DeleteEmployeeRecordActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Ensure a record is selected before proceeding
-        if (!isSelectRecord()) {
-            return;
-        }
+        List<DailyAttendance> employeeAttendance = dtrManager.getFilteredDailyAttendance(employeeID, selectedPayPeriod);
         
-        int rowIndex = jTable1EmployeeList.getSelectedRow(); // Get selected row index
-
-        // Extract all employee details from the table
-        String employeeId = jTable1EmployeeList.getValueAt(rowIndex, 0).toString();
-        String lastName = jTable1EmployeeList.getValueAt(rowIndex, 1).toString();
-        String firstName = jTable1EmployeeList.getValueAt(rowIndex, 2).toString();        
-        String birthday = jTable1EmployeeList.getValueAt(rowIndex, 3).toString();
-        String address = jTable1EmployeeList.getValueAt(rowIndex, 4).toString();
-        String phone = jTable1EmployeeList.getValueAt(rowIndex, 5).toString();
-
-        // Create an Employee object with all details
-        Employee selectedEmployee = new Employee(employeeId, lastName, firstName, birthday, address, phone);
+        double payableHours = AttendanceCalculator.calculatePayableHours(employeeAttendance);
+        double regularHours = AttendanceCalculator.calculateRegularWorkedHours(employeeAttendance);
+        double overtime = AttendanceCalculator.calculateApprovedOverTimeHours(employeeAttendance);
         
-//        Access.accessDTR(this.admin, selectedEmployee);
-        Access.accessDTR(selectedEmployee);
-        this.setVisible(false); // Hide the current frame
-    }//GEN-LAST:event_jButton1ActionPerformed
+        String[] results = {String.valueOf(payableHours),String.valueOf(regularHours),String.valueOf(overtime)};
+        setResultFields(results);      
+        
+    }//GEN-LAST:event_jComboBoxAttendancePeriodActionPerformed
 
     private void jButton1EmployeeInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1EmployeeInformationActionPerformed
-
+        Access.accessEmployeeInformation((Admin) this.user);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton1EmployeeInformationActionPerformed
 
     private void jButton3SelfServicePortalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3SelfServicePortalActionPerformed
-        Access.accessProfilePage(this.admin);
+        Access.accessProfilePage(user);
         this.setVisible(false);
     }//GEN-LAST:event_jButton3SelfServicePortalActionPerformed
 
     private void jButton4PayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4PayrollActionPerformed
-        Access.accessPayrollList(this.admin);
+        Access.accessPayrollList((Admin) this.user);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4PayrollActionPerformed
 
     private void jButton4AttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4AttendanceActionPerformed
-        Access.accessAttendanceBiweekly((Admin) this.admin);
+        Access.accessAttendanceBiweekly((Admin) this.user);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4AttendanceActionPerformed
 
@@ -422,40 +424,37 @@ public class EmployeeInformation extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EmployeeInformation().setVisible(true);
+                new AttendanceDailyRecord().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton1AddNewRecord;
     private javax.swing.JButton jButton1EmployeeInformation;
-    private javax.swing.JButton jButton1ViewEmployeeDetails;
-    private javax.swing.JButton jButton2DeleteEmployeeRecord;
     private javax.swing.JButton jButton3EmployeeRequest;
     private javax.swing.JButton jButton3SelfServicePortal;
     private javax.swing.JButton jButton4Attendance;
     private javax.swing.JButton jButton4Payroll;
     private javax.swing.JButton jButton6LogOut;
+    private javax.swing.JComboBox<String> jComboBoxAttendancePeriod;
+    private javax.swing.JLabel jLabelEmployeeName;
+    private javax.swing.JLabel jLabelOvertime;
+    private javax.swing.JLabel jLabelOvertimeResult;
+    private javax.swing.JLabel jLabelRegular;
+    private javax.swing.JLabel jLabelRegularResult;
+    private javax.swing.JLabel jLabelTotalHours;
+    private javax.swing.JLabel jLabelTotalHoursResult;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1EmployeeList;
+    private javax.swing.JTable jTableDailyAttendanceList;
     // End of variables declaration//GEN-END:variables
 
-    /**
-     * Validates if exactly one employee record is selected in the table.
-     * Displays an error message if no or multiple selections are made.
-     *
-     * @return true if one record is selected, false otherwise
-     */
-    private boolean isSelectRecord() {
-        if((jTable1EmployeeList.getSelectedRowCount() != 1)) { // Ensure exactly one row is selected
-            JOptionPane.showMessageDialog(null, "Please select 1 Employee Record");
-            return false;            
-        }
-        return true;
+    public void setResultFields(String[] results) {
+        jLabelTotalHoursResult.setText(results[0]);
+        jLabelRegularResult.setText(results[1]);
+        jLabelOvertimeResult.setText(results[2]);
     }
 
 }
+

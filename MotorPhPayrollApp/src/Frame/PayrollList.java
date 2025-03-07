@@ -8,20 +8,26 @@ package Frame;
  *
  * @author Charm
  */
+import Class.PPS.PayPeriod;
+import Class.PPS.PayrollService;
 import Class.UMS.*;
+import javax.swing.JOptionPane;
 
-public class CompanyHomePage extends javax.swing.JFrame {
+public class PayrollList extends javax.swing.JFrame {
     Admin admin;
+    PayrollService payrollService = new PayrollService();
     
-    public CompanyHomePage() {
+    public PayrollList() {
         initComponents();        
-
+        jTablePayrollList.setModel(payrollService.getPayrollListTableModel());
+        jLabelPayrollCount.setText(String.valueOf(payrollService.getPayrollListTableModel().getRowCount()) + " Payroll");
     }
 
-    public CompanyHomePage(Admin admin) {
+    public PayrollList(Admin admin) {
         initComponents();
         this.admin = admin;
-
+        jTablePayrollList.setModel(payrollService.getPayrollListTableModel());
+        jLabelPayrollCount.setText(String.valueOf(payrollService.getPayrollListTableModel().getRowCount()) + " Payroll");
     }
 
     
@@ -48,6 +54,10 @@ public class CompanyHomePage extends javax.swing.JFrame {
         jButton3SelfServicePortal = new javax.swing.JButton();
         jButton4Attendance = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTablePayrollList = new javax.swing.JTable();
+        jButtonRunPayroll = new javax.swing.JButton();
+        jLabelPayrollCount = new javax.swing.JLabel();
 
         jButton5.setBackground(new java.awt.Color(0, 102, 153));
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -81,6 +91,11 @@ public class CompanyHomePage extends javax.swing.JFrame {
         jButton3EmployeeRequest.setForeground(new java.awt.Color(255, 255, 255));
         jButton3EmployeeRequest.setText("Employee Request");
         jButton3EmployeeRequest.setBorder(null);
+        jButton3EmployeeRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3EmployeeRequestActionPerformed(evt);
+            }
+        });
 
         jButton4Payroll.setBackground(new java.awt.Color(0, 102, 153));
         jButton4Payroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -154,7 +169,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
                 .addComponent(jButton4Payroll)
                 .addGap(30, 30, 30)
                 .addComponent(jButton4Attendance)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton6LogOut)
                 .addContainerGap())
         );
@@ -173,21 +188,64 @@ public class CompanyHomePage extends javax.swing.JFrame {
             .addGap(0, 23, Short.MAX_VALUE)
         );
 
+        jTablePayrollList.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(jTablePayrollList);
+
+        jButtonRunPayroll.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonRunPayroll.setText("Run Payroll");
+        jButtonRunPayroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRunPayrollActionPerformed(evt);
+            }
+        });
+
+        jLabelPayrollCount.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelPayrollCount.setText("Payroll");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(920, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 896, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelPayrollCount)
+                            .addComponent(jButtonRunPayroll))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jButtonRunPayroll)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelPayrollCount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))))
         );
 
         pack();
@@ -210,15 +268,37 @@ public class CompanyHomePage extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton3SelfServicePortalActionPerformed
 
-    private void jButton4PayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4PayrollActionPerformed
-        Access.accessPayrollList(this.admin);
+    private void jButtonRunPayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunPayrollActionPerformed
+        // Ensure a record is selected before proceeding
+        if (!isSelectRecord()) {
+            return;
+        }
+        
+        int rowIndex = jTablePayrollList.getSelectedRow(); // Get selected row index
+        String fullText = (String) jTablePayrollList.getValueAt(rowIndex, 0);
+        String[] parts = fullText.split(":"); // Split at ":"
+        String payPeriodText = parts[1].trim(); // Extract dates part
+        String[] dates = payPeriodText.split(" "); // Split start and end dates
+
+        
+        PayPeriod payrollPayPeriod = new PayPeriod(dates[0], dates[1]); 
+        
+        Access.accessPayrollEmployeeSelection(this.admin, payrollPayPeriod);
         this.setVisible(false);
-    }//GEN-LAST:event_jButton4PayrollActionPerformed
+    }//GEN-LAST:event_jButtonRunPayrollActionPerformed
 
     private void jButton4AttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4AttendanceActionPerformed
         Access.accessAttendanceBiweekly(this.admin);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4AttendanceActionPerformed
+
+    private void jButton3EmployeeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3EmployeeRequestActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3EmployeeRequestActionPerformed
+
+    private void jButton4PayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4PayrollActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4PayrollActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,7 +313,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
             }
         }
     } catch (Exception ex) {
-        java.util.logging.Logger.getLogger(CompanyHomePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        java.util.logging.Logger.getLogger(PayrollList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
 
     // Assuming you have a way to authenticate the user and create a valid User object
@@ -242,7 +322,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
     /* Create and display the form */
     java.awt.EventQueue.invokeLater(new Runnable() {
         public void run() {
-            new CompanyHomePage().setVisible(true); 
+            new PayrollList().setVisible(true); 
             
             // Pass the logged-in user to the constructor
 //            new CompanyHomePage(loggedInUser).setVisible(true); 
@@ -258,11 +338,31 @@ public class CompanyHomePage extends javax.swing.JFrame {
     private javax.swing.JButton jButton4Payroll;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6LogOut;
+    private javax.swing.JButton jButtonRunPayroll;
+    private javax.swing.JLabel jLabelPayrollCount;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTablePayrollList;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Validates if exactly one employee record is selected in the table.
+     * Displays an error message if no or multiple selections are made.
+     *
+     * @return true if one record is selected, false otherwise
+     */
+    private boolean isSelectRecord() {
+        if((jTablePayrollList.getSelectedRowCount() != 1)) { // Ensure exactly one row is selected
+            JOptionPane.showMessageDialog(null, "Please select 1 Payroll Record");
+            return false;            
+        }
+        return true;
+    }
+
 }
+
