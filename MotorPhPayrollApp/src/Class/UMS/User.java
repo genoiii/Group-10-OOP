@@ -45,6 +45,10 @@ public class User {
      * @param username The username of the user
      * @param password The password of the user
      */    
+    
+// Static variable for current logged-in user
+    private static User currentUser;
+    
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -102,21 +106,16 @@ public class User {
 //        return authenticationResult; // Returns the result of authentication
 //    }
     
-    // getters and setters
-//    public HashMap<String, String[]> getUserMap() {
-//        return userMap;
-//    }    
-//    protected void setUserMap() {
-//        File userFile = new File("UserFile","src/CSV/MotorPH Employee Data - User Details.csv");
-//        this.userData = userFile.readFile(); // Assigns the input dataFile to userData
-//        this.userMap = new HashMap<String, String[]>(); // Initializes the userMap
-//        
-//        // Iterates through each string in userData
-//        for (String[] i : this.userData){
-//            // Puts the divided  row into userMap with the username as the key
-//            this.userMap.put(i[2],i);
-//        }                    
-//    } 
+    public boolean login(String enteredUsername, String enteredPassword) {
+    // Check if entered credentials match the stored user credentials
+    if (this.username.equals(enteredUsername) && this.password.equals(enteredPassword)) {
+        setCurrentUser(this); // Set the current user if authentication succeeds
+        return true;
+    }
+    return false;
+}
+      
+
     
     // Getters and Setters  
     
@@ -131,7 +130,7 @@ public class User {
     /**
      * Retrieves the employee ID of the user.
      * @return The employee ID
-     */
+     */   
     public String getEmployeeID() {
         return employeeID;
     }

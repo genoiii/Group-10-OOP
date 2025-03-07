@@ -81,9 +81,10 @@ public class SaleForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Select Service:");
+        jLabel1.setText("Select Sale:");
 
-        jComboBoxService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sold Phone", "Repair Service" }));
+        jComboBoxService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product", "Service" }));
+        jComboBoxService.setSelectedIndex(-1);
         jComboBoxService.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxServiceActionPerformed(evt);
@@ -159,7 +160,7 @@ public class SaleForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxServiceActionPerformed
-        if(jComboBoxService.getSelectedItem().equals("Sold Phone")){
+        if(jComboBoxService.getSelectedItem().equals("Product")){
             jComboBoxItem.removeAllItems();            
             jComboBoxItem.addItem("Iphone");
             jComboBoxItem.addItem("Samsung");
@@ -168,7 +169,7 @@ public class SaleForm extends javax.swing.JFrame {
             jSpinnerQuantity.setValue(0);
             jSpinnerQuantity.setEnabled(false);
         }
-        if(jComboBoxService.getSelectedItem().equals("Repair Service")){
+        if(jComboBoxService.getSelectedItem().equals("Service")){
             jComboBoxItem.removeAllItems();
             jComboBoxItem.addItem("Screen replacement");
             jComboBoxItem.addItem("Battery replacement");
@@ -205,11 +206,11 @@ public class SaleForm extends javax.swing.JFrame {
     private void jSpinnerQuantityStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerQuantityStateChanged
         
         try{
-            if(jComboBoxService.getSelectedItem().equals("Sold Phone")){
+            if(jComboBoxService.getSelectedItem().equals("Product")){
                 Product product = new Product(jComboBoxItem.getSelectedItem().toString(),Integer.parseInt(jLabelServicePrice.getText()));
                 jLabelTotalSale.setText(String.valueOf(product.computeTotalSale((int) jSpinnerQuantity.getValue())));
             }
-            else if (jComboBoxService.getSelectedItem().equals("Repair Service")){
+            else if (jComboBoxService.getSelectedItem().equals("Service")){
                 Service service = new Service(jComboBoxItem.getSelectedItem().toString(),Integer.parseInt(jLabelServicePrice.getText()));
                 jLabelTotalSale.setText(String.valueOf(service.computeTotalSale((int) jSpinnerQuantity.getValue())));
             }

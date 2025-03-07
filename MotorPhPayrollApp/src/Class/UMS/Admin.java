@@ -16,7 +16,7 @@ import Class.*;
  * This class extends the User class and provides specific functionality for administrators.
  */
 public class Admin extends User {
-    
+   
     /**
      * Constructor to initialize an Admin object with username, password, and user credentials.
      * @param username The admin's username

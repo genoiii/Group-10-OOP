@@ -160,17 +160,18 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Select Service:"/>
+        <Property name="text" type="java.lang.String" value="Select Sale:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="jComboBoxService">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="2">
-            <StringItem index="0" value="Sold Phone"/>
-            <StringItem index="1" value="Repair Service"/>
+            <StringItem index="0" value="Product"/>
+            <StringItem index="1" value="Service"/>
           </StringArray>
         </Property>
+        <Property name="selectedIndex" type="int" value="-1"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxServiceActionPerformed"/>

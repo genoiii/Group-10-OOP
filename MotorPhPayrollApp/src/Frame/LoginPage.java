@@ -11,7 +11,6 @@ import Class.UMS.*;
  * @author Charm
  */
 //import App.UMS.Admin;
-import javax.swing.JOptionPane;
 
 public class LoginPage extends javax.swing.JFrame {
 
@@ -48,12 +47,6 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel1Username.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1Username.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1Username.setText("Username:");
-
-        jTextField1Username.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1UsernameActionPerformed(evt);
-            }
-        });
 
         jLabel3Password.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3Password.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,13 +175,6 @@ public class LoginPage extends javax.swing.JFrame {
         
             
     }//GEN-LAST:event_jButton1LogInActionPerformed
-
-    private void jTextField1UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1UsernameActionPerformed
-//        String username = jTextField1Username.getText();
-//        if (username.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Username cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-    }//GEN-LAST:event_jTextField1UsernameActionPerformed
 
     /**
      * @param args the command line arguments

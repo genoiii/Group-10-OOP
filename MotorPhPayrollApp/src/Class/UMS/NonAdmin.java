@@ -5,6 +5,7 @@
 package Class.UMS;
 
 import Class.*;
+import Frame.EmployeeDashboard;
 
 /**
  *
@@ -16,7 +17,7 @@ import Class.*;
  * This class extends the User class and provides specific functionality for regular users.
  */
 public class NonAdmin extends User {
-    
+   
     /**
      * Constructor to initialize a NonAdmin object with username, password, and user credentials.
      * @param username The non-admin user's username
