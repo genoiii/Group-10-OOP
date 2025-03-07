@@ -5,40 +5,78 @@
 package Class.EMS;
 
 /**
+ * Represents an Employee entity.
  *
- * @author 63909
- */
-
-/**
- * The Employee class represents an employee's personal, government, 
- * employment, and salary-related information.
+ * <p>This class serves as a model for employee data. It can be extended to include properties
+ * such as employee ID, name, department, and other relevant details.</p>
  */
 public class Employee {
     private String employeeID; // Unique identifier for the employee
+    private PersonalInformation personalInformation; // Holds personal details like name, contact info, etc.
+    private GovernmentInformation governmentInformation; // Contains government-related information such as IDs and other credentials.
+    private EmploymentInformation employmentInformation; // Stores employment details such as position, department, and salary.
     
     //Personal Information
     private String lastName, firstName;
     private String birthday, address, phoneNumber;
 
-    //Goverment Information
+    //Government Information
     private String sssNumber, philhealthNumber, tinNumber, pagibigNumber;
 
-    //Employement Information
+    //Employment Information
     private String employmentStatus, position, immediateSupervisor;
 
     // Compensation & Benefits
     private String basicSalary;
     private String riceSubsidy, phoneAllowance, clothingAllowance;
     private String grossSemiMonthlyRate, hourlyRate;
-
+    
+    public Employee() {} 
+    
     /**
      * Constructor that initializes an Employee with an ID.
      *
-     * @param employeeID The unique employee ID.
+     * @param employeeID the unique identifier for the employee.
      */
     public Employee(String employeeID) {
-        this.employeeID = employeeID;
-    }   
+        this.employeeID = employeeID; // Initialize employeeID field with the provided value.
+    }
+    
+    /**
+     * Constructs an Employee with the specified personal information.
+     *
+     * @param personalInformation the PersonalInformation object containing the employee's personal details.
+     */
+    public Employee(PersonalInformation personalInformation) {
+        this.personalInformation = personalInformation; // Initialize the personalInformation field.
+    }
+    
+    /**
+     * Constructs an Employee with the specified government information.
+     *
+     * @param governmentInformation the GovernmentInformation object containing the employee's government details.
+     */    
+    public Employee(GovernmentInformation governmentInformation) {
+        this.governmentInformation = governmentInformation; // Initialize the governmentInformation field with the provided object.
+    }
+    
+    /**
+     * Constructs an Employee with the specified employment information.
+     *
+     * @param employmentInformation the EmploymentInformation object containing the employee's employment details.
+     */    
+    public Employee(EmploymentInformation employmentInformation) {
+        this.employmentInformation = employmentInformation; // Initialize the employmentInformation field with the provided object.
+    }
+    
+    public Employee(String employeeId, String lastName, String firstName, String birthday, String address, String phone){
+        setEmployeeID(employeeId);
+        setLastName(lastName);
+        setFirstName(firstName);
+        setBirthday(birthday);
+        setAddress(address);
+        setPhoneNumber(phone);
+    }
     
     /**
      * Constructor that initializes an Employee object from an array of information.
@@ -241,11 +279,4 @@ public class Employee {
     public void setEmployeeID(String employeeID) {
         this.employeeID = employeeID;
     }
-    
-           
-
-    
-            
-    
-
 }

@@ -11,6 +11,7 @@ package Frame;
 import Class.UMS.*;
 
 public class CompanyHomePage extends javax.swing.JFrame {
+    Admin admin;
     
     public CompanyHomePage() {
         initComponents();        
@@ -19,7 +20,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
 
     public CompanyHomePage(Admin admin) {
         initComponents();
-        
+        this.admin = admin;
 
     }
 
@@ -45,6 +46,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
         jButton4Payroll = new javax.swing.JButton();
         jButton6LogOut = new javax.swing.JButton();
         jButton3SelfServicePortal = new javax.swing.JButton();
+        jButton4Attendance = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
         jButton5.setBackground(new java.awt.Color(0, 102, 153));
@@ -85,6 +87,11 @@ public class CompanyHomePage extends javax.swing.JFrame {
         jButton4Payroll.setForeground(new java.awt.Color(255, 255, 255));
         jButton4Payroll.setText("Payroll");
         jButton4Payroll.setBorder(null);
+        jButton4Payroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4PayrollActionPerformed(evt);
+            }
+        });
 
         jButton6LogOut.setBackground(new java.awt.Color(0, 102, 153));
         jButton6LogOut.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
@@ -102,6 +109,22 @@ public class CompanyHomePage extends javax.swing.JFrame {
         jButton3SelfServicePortal.setForeground(new java.awt.Color(255, 255, 255));
         jButton3SelfServicePortal.setText("Self Service Portal");
         jButton3SelfServicePortal.setBorder(null);
+        jButton3SelfServicePortal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3SelfServicePortalActionPerformed(evt);
+            }
+        });
+
+        jButton4Attendance.setBackground(new java.awt.Color(0, 102, 153));
+        jButton4Attendance.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton4Attendance.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4Attendance.setText("Attendance");
+        jButton4Attendance.setBorder(null);
+        jButton4Attendance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4AttendanceActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -114,7 +137,8 @@ public class CompanyHomePage extends javax.swing.JFrame {
                     .addComponent(jButton3EmployeeRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jButton4Payroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addComponent(jButton6LogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+                    .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jButton4Attendance, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -122,13 +146,15 @@ public class CompanyHomePage extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(86, 86, 86)
                 .addComponent(jButton3SelfServicePortal)
-                .addGap(37, 37, 37)
+                .addGap(30, 30, 30)
                 .addComponent(jButton3EmployeeRequest)
-                .addGap(37, 37, 37)
+                .addGap(30, 30, 30)
                 .addComponent(jButton1EmployeeInformation)
-                .addGap(34, 34, 34)
+                .addGap(30, 30, 30)
                 .addComponent(jButton4Payroll)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 278, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(jButton4Attendance)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
                 .addComponent(jButton6LogOut)
                 .addContainerGap())
         );
@@ -169,8 +195,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1EmployeeInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1EmployeeInformationActionPerformed
-         EmployeeInformation employeeInfoPage = new EmployeeInformation();
-         employeeInfoPage.setVisible(true);
+         Access.accessEmployeeInformation(this.admin);
          this.setVisible(false);
     }//GEN-LAST:event_jButton1EmployeeInformationActionPerformed
 
@@ -179,6 +204,21 @@ public class CompanyHomePage extends javax.swing.JFrame {
         loginPage.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton6LogOutActionPerformed
+
+    private void jButton3SelfServicePortalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3SelfServicePortalActionPerformed
+        Access.accessProfilePage(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton3SelfServicePortalActionPerformed
+
+    private void jButton4PayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4PayrollActionPerformed
+        Access.accessPayrollList(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton4PayrollActionPerformed
+
+    private void jButton4AttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4AttendanceActionPerformed
+        Access.accessAttendanceBiweekly(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton4AttendanceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,6 +254,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
     private javax.swing.JButton jButton1EmployeeInformation;
     private javax.swing.JButton jButton3EmployeeRequest;
     private javax.swing.JButton jButton3SelfServicePortal;
+    private javax.swing.JButton jButton4Attendance;
     private javax.swing.JButton jButton4Payroll;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6LogOut;
