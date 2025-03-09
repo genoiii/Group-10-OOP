@@ -371,7 +371,6 @@
                         </Column>
                       </TableColumnModel>
                     </Property>
-                    <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                     <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="cc" red="99" type="rgb"/>
                     </Property>
@@ -403,11 +402,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="REJECT"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1RejectLeaveActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton1ApproveLeave">
               <Properties>
                 <Property name="text" type="java.lang.String" value="APPROVE"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ApproveLeaveActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -515,7 +520,6 @@
                         </Column>
                       </TableColumnModel>
                     </Property>
-                    <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                     <Property name="selectionBackground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="cc" red="99" type="rgb"/>
                     </Property>

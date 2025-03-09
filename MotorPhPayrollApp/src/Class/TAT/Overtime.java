@@ -28,7 +28,7 @@ public class Overtime extends Request {
     this.overtimeDate = overtimeDate;
     this.payableHours = payableHours;
     }
-    
+
     // Time validation method for HH:MM format
     public boolean isValidTimeFormat(String time) {
         // Validate the time format (HH:MM)
@@ -122,7 +122,10 @@ public class Overtime extends Request {
                 endTime, 
                 String.valueOf(totalOvertime), 
                 formattedRequestDate, 
-                getStatus())); 
+                getStatus(),
+                "", // Processed By (empty initially)
+                "", // Date Processed (empty initially)
+                "0")); //Payable hours (empty initially)
             writer.newLine();
         }
     }

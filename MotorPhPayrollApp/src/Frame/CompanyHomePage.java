@@ -8,11 +8,15 @@ package Frame;
  *
  * @author Charm
  */
-import Class.TAT.Overtime;
+import Class.TAT.ApproveLeave;
+import Class.TAT.ApproveOvertime;
 import Class.UMS.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 public class CompanyHomePage extends javax.swing.JFrame {
@@ -284,7 +288,6 @@ public class CompanyHomePage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1Leave.setColumnSelectionAllowed(true);
         jTable1Leave.setSelectionBackground(new java.awt.Color(153, 204, 255));
         jTable1Leave.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(jTable1Leave);
@@ -315,8 +318,18 @@ public class CompanyHomePage extends javax.swing.JFrame {
         });
 
         jButton1RejectLeave.setText("REJECT");
+        jButton1RejectLeave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1RejectLeaveActionPerformed(evt);
+            }
+        });
 
         jButton1ApproveLeave.setText("APPROVE");
+        jButton1ApproveLeave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ApproveLeaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -365,7 +378,6 @@ public class CompanyHomePage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2Overtime.setColumnSelectionAllowed(true);
         jTable2Overtime.setSelectionBackground(new java.awt.Color(153, 204, 255));
         jTable2Overtime.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jTable2Overtime);
@@ -487,11 +499,97 @@ public class CompanyHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1StatusSelectOTActionPerformed
 
     private void jButton2ApproveOTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ApproveOTActionPerformed
-   
+    // Get the selected row from the JTable
+    int selectedRow = jTable2Overtime.getSelectedRow();
+        
+    // Check if a row is selected
+    if (selectedRow != -1) {
+        String requestID = jTable2Overtime.getValueAt(selectedRow, 0).toString();  // Get the Request ID from the first column
+        
+        // Read the CSV file to find the row corresponding to the requestID
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("src/CSVFiles/MotorPH Employee Data - Overtime.csv"));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                
+                // Check if the row matches the requestID
+                if (row[0].equals(requestID)) {
+                    // If the status is already APPROVED or REJECTED, no more action allowed
+                    if ("APPROVED".equals(row[7]) || "REJECTED".equals(row[7])) {
+                        return;  // Exit method without making changes
+                    }
+                        
+                        ApproveOvertime approveOvertime = new ApproveOvertime(requestID);
+                        approveOvertime.approveOT(true);  // Approve the overtime request
+                        
+                        // Update the CSV file, adding the new values
+                        approveOvertime.updateCSVFile("src/CSVFiles/MotorPH Employee Data - Overtime.csv");                        
+                    }}
+                } catch (IOException ex) {
+            Logger.getLogger(CompanyHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Ensure the reader is closed in the finally block
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(CompanyHomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        // Refresh the JTable after approval
+        loadOvertimeRequestsToTable("PENDING");
+    }
     }//GEN-LAST:event_jButton2ApproveOTActionPerformed
-
+   
     private void jButton1RejectOTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1RejectOTActionPerformed
+    // Get the selected row from the JTable
+    int selectedRow = jTable2Overtime.getSelectedRow();
+        
+    // Check if a row is selected
+    if (selectedRow != -1) {
+        String requestID = jTable2Overtime.getValueAt(selectedRow, 0).toString();  // Get the Request ID from the first column
+        
+        // Read the CSV file to find the row corresponding to the requestID
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("src/CSVFiles/MotorPH Employee Data - Overtime.csv"));
+            String line;
 
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                
+                // Check if the row matches the requestID
+                if (row[0].equals(requestID)) {
+                    // If the status is already APPROVED or REJECTED, no more action allowed
+                    if ("APPROVED".equals(row[7]) || "REJECTED".equals(row[7])) {
+                        return;  // Exit method without making changes
+                    }
+                        
+                        ApproveOvertime approveOvertime = new ApproveOvertime(requestID);
+                        approveOvertime.approveOT(false);  // Reject the overtime request
+                        
+                        // Update the CSV file, adding the new values
+                        approveOvertime.updateCSVFile("src/CSVFiles/MotorPH Employee Data - Overtime.csv");                        
+                    }}
+                } catch (IOException ex) {
+            Logger.getLogger(CompanyHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Ensure the reader is closed in the finally block
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(CompanyHomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        // Refresh the JTable after approval
+        loadOvertimeRequestsToTable("PENDING");
+    }
     }//GEN-LAST:event_jButton1RejectOTActionPerformed
 
     private void jComboBox1StatusSelectLeaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1StatusSelectLeaveActionPerformed
@@ -501,6 +599,100 @@ public class CompanyHomePage extends javax.swing.JFrame {
         // Load and filter the leave requests based on selected status
         loadLeaveRequestsToTable(selectedStatus);
     }//GEN-LAST:event_jComboBox1StatusSelectLeaveActionPerformed
+
+    private void jButton1ApproveLeaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ApproveLeaveActionPerformed
+    // Get the selected row from the JTable
+    int selectedRow = jTable1Leave.getSelectedRow();
+        
+    // Check if a row is selected
+    if (selectedRow != -1) {
+        String requestID = jTable1Leave.getValueAt(selectedRow, 0).toString();  // Get the Request ID from the first column
+        
+        // Read the CSV file to find the row corresponding to the requestID
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("src/CSVFiles/MotorPH Employee Data - Leave.csv"));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                
+                // Check if the row matches the requestID
+                if (row[0].equals(requestID)) {
+                    // If the status is already APPROVED or REJECTED, no more action allowed
+                    if ("APPROVED".equals(row[8]) || "REJECTED".equals(row[8])) {
+                        return;  // Exit method without making changes
+                    }
+                        
+                        ApproveLeave approveLeave = new ApproveLeave(requestID);
+                        approveLeave.approveLeaveType(true);  // Approve the leave request
+                        
+                        // Update the CSV file, adding the new values
+                        approveLeave.updateCSVFile("src/CSVFiles/MotorPH Employee Data - Leave.csv");                        
+                    }}
+                } catch (IOException ex) {
+            Logger.getLogger(CompanyHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Ensure the reader is closed in the finally block
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(CompanyHomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        // Refresh the JTable after approval
+        loadLeaveRequestsToTable("PENDING");
+    }
+    }//GEN-LAST:event_jButton1ApproveLeaveActionPerformed
+
+    private void jButton1RejectLeaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1RejectLeaveActionPerformed
+    // Get the selected row from the JTable
+    int selectedRow = jTable1Leave.getSelectedRow();
+        
+    // Check if a row is selected
+    if (selectedRow != -1) {
+        String requestID = jTable1Leave.getValueAt(selectedRow, 0).toString();  // Get the Request ID from the first column
+        
+        // Read the CSV file to find the row corresponding to the requestID
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("src/CSVFiles/MotorPH Employee Data - Leave.csv"));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                
+                // Check if the row matches the requestID
+                if (row[0].equals(requestID)) {
+                    // If the status is already APPROVED or REJECTED, no more action allowed
+                    if ("APPROVED".equals(row[8]) || "REJECTED".equals(row[8])) {
+                        return;  // Exit method without making changes
+                    }
+                        
+                        ApproveLeave approveLeave = new ApproveLeave(requestID);
+                        approveLeave.approveLeaveType(false);  // Reject the leave request
+                        
+                        // Update the CSV file, adding the new values
+                        approveLeave.updateCSVFile("src/CSVFiles/MotorPH Employee Data - Leave.csv");                        
+                    }}
+                } catch (IOException ex) {
+            Logger.getLogger(CompanyHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Ensure the reader is closed in the finally block
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(CompanyHomePage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        // Refresh the JTable after approval
+        loadLeaveRequestsToTable("PENDING");
+    }
+    }//GEN-LAST:event_jButton1RejectLeaveActionPerformed
 
     /**
      * @param args the command line arguments
