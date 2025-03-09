@@ -22,6 +22,7 @@ public class Leave extends Request {
     private String leaveType;
     private String notes;
     private double totalDays;
+    private double payableDays;
 
     // Constructor for Leave request
     public Leave(Date startDate, Date endDate, String leaveType, String notes, Date requestDate) throws IOException {
@@ -30,7 +31,8 @@ public class Leave extends Request {
         this.endDate = endDate;
         this.leaveType = leaveType;
         this.notes = notes;
-        this.totalDays = calculateTotalDays(startDate, endDate); 
+        this.totalDays = calculateTotalDays(startDate, endDate);; 
+        this.payableDays = payableDays;
     }
 
     // Method to calculate total leave days (end date - start date)
@@ -101,7 +103,10 @@ public class Leave extends Request {
                 String.valueOf(totalDays), 
                 notes, 
                 formattedRequestDate, 
-                getStatus()));  // Adding all required data
+                getStatus(),
+                "", // Processed By (empty initially)
+                "", // Date Processed (empty initially)
+                "0"));// Payable Days (empty initially)
             writer.newLine();
         }
     }
