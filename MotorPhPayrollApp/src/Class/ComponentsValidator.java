@@ -5,6 +5,8 @@
 package Class;
 
 import com.toedter.calendar.JDateChooser;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 /**
@@ -15,13 +17,22 @@ import javax.swing.JTextField;
  */
 public class ComponentsValidator {
     
+    public static String validateRequiredJComboBox(JComboBox comboBox){
+        // Check if the text field is empty after trimming whitespace.
+        if (comboBox.getSelectedIndex() < 0 || comboBox.getSelectedItem() == null) {
+            return "Please fill in all required fields.";
+        }
+        
+        return ""; // Return an empty string if the text field is populated.
+    }
+    
     /**
      * Validates that the given JTextField is not empty.
      *
      * @param textField the JTextField to validate.
      * @return an error message if the field is empty, otherwise an empty string.
      */
-    public static String validateRequiredKTextField(JTextField textField){
+    public static String validateRequiredJTextField(JTextField textField){
         // Check if the text field is empty after trimming whitespace.
         if (textField.getText().trim().isEmpty()) {
             return "Please fill in all required fields.";

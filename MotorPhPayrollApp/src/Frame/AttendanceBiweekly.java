@@ -33,6 +33,8 @@ public class AttendanceBiweekly extends javax.swing.JFrame {
     public AttendanceBiweekly(Admin admin) {
         initComponents();
         this.admin = admin;
+        admin.addLogoutListener(this);
+     
         jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
         jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
         jComboBoxAttendancePeriod.setSelectedIndex(-1);
@@ -61,7 +63,7 @@ public class AttendanceBiweekly extends javax.swing.JFrame {
         jLabelAttendancePeriod = new javax.swing.JLabel();
         jComboBoxAttendancePeriod = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -245,9 +247,7 @@ public class AttendanceBiweekly extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6LogOutActionPerformed
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true);
-        this.setVisible(false);
+        admin.logout(this);
     }//GEN-LAST:event_jButton6LogOutActionPerformed
 
     private void jComboBoxAttendancePeriodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAttendancePeriodActionPerformed
@@ -276,8 +276,7 @@ public class AttendanceBiweekly extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3SelfServicePortalActionPerformed
 
     private void jButton4AttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4AttendanceActionPerformed
-        Access.accessEmployeeInformation(this.admin);
-        this.setVisible(false);
+        
     }//GEN-LAST:event_jButton4AttendanceActionPerformed
 
     private void jButton1EmployeeInformationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1EmployeeInformationActionPerformed
@@ -286,7 +285,8 @@ public class AttendanceBiweekly extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1EmployeeInformationActionPerformed
 
     private void jButton3EmployeeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3EmployeeRequestActionPerformed
-        // TODO add your handling code here:
+        Access.accessEmployeeRequests(this.admin);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton3EmployeeRequestActionPerformed
 
     private void jTableBiweeklyAttendaceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableBiweeklyAttendaceMouseClicked
@@ -329,13 +329,13 @@ public class AttendanceBiweekly extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AttendanceBiweekly.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AttendanceBiweekly.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AttendanceBiweekly.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AttendanceBiweekly.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

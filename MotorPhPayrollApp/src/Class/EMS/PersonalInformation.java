@@ -53,8 +53,8 @@ public class PersonalInformation extends Information {
         }
         
         // Assign first name and last name from the personalData array.
-        this.firstName = personalData[2];
-        this.lastName = personalData[1];        
+        this.lastName = personalData[1]; 
+        this.firstName = personalData[2];               
         this.address = personalData[4];
         this.phoneNumber = personalData[5];
         
@@ -75,9 +75,9 @@ public class PersonalInformation extends Information {
     @Override
     public String[] getInformation() {
         // Return an array with the personal details.
-        return new String[] {employeeID,
-                            firstName,
+        return new String[] {employeeID,                            
                             lastName,
+                            firstName,
                             dateFormat.format(birthday),
                             address,
                             phoneNumber

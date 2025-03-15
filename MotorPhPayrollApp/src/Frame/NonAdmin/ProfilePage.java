@@ -8,6 +8,8 @@ import Class.*;
 import Class.EMS.*;
 import Class.UMS.*;
 import Frame.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.*;
@@ -31,16 +33,16 @@ public class ProfilePage extends javax.swing.JFrame {
 
     }
     
-    public ProfilePage(User user) {
-        this.user = user;
+    public ProfilePage(User user) {        
         initComponents();
+        this.user = user;
+        user.addLogoutListener(this);
         
         if (user instanceof NonAdmin){
             jButton3AdminPortal.setVisible(false);
-            disableAllTextField();
-        }else {
-            enableAllTextField();
         }
+        
+        disableAllTextField();
         
         this.personalInformation = new InformationService().getPersonalInformation(this.user.getEmployeeID());
         this.governmentInformation = new InformationService().getGovernmentInformation(this.user.getEmployeeID());
@@ -49,6 +51,12 @@ public class ProfilePage extends javax.swing.JFrame {
         viewGovernmentInformation(this.governmentInformation);
         viewEmploymentInformation(this.employmentInformation);
         
+        jDateChooserBirthday.getDateEditor().getUiComponent().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                jDateChooserBirthday.setEnabled(true);
+            }
+        });
         
     }  
     
@@ -71,7 +79,7 @@ public class ProfilePage extends javax.swing.JFrame {
     
     public void viewEmploymentInformation(EmploymentInformation employmentInformation){      
         jTextField16Position.setText(employmentInformation.getJobTitle().getJobName());
-        jTextField15Status.setText(employmentInformation.getEmploymentStatus());
+        jTextField15Status.setText(employmentInformation.getEmploymentType());
         jTextField10ImmediateSupervisor.setText(employmentInformation.getImmediateSupervisor());
         jTextFieldDateHired.setText(employmentInformation.getDateHired().toString());
         jTextField11BasicSalary.setText(employmentInformation.getBasicSalary());
@@ -108,7 +116,6 @@ public class ProfilePage extends javax.swing.JFrame {
         jTextField1LastName = new javax.swing.JTextField();
         jTextField2FirstName = new javax.swing.JTextField();
         jLabel3Birthday = new javax.swing.JLabel();
-        jTextField3Birthday = new javax.swing.JTextField();
         jLabel4Address = new javax.swing.JLabel();
         jTextField4Address = new javax.swing.JTextField();
         jLabel6PhoneNumber = new javax.swing.JLabel();
@@ -118,7 +125,6 @@ public class ProfilePage extends javax.swing.JFrame {
         jLabel15Status = new javax.swing.JLabel();
         jLabel10ImmediateSupervisor = new javax.swing.JLabel();
         jLabel16Position = new javax.swing.JLabel();
-        jTextField15Status = new javax.swing.JTextField();
         jTextField16Position = new javax.swing.JTextField();
         jTextField10ImmediateSupervisor = new javax.swing.JTextField();
         jTextField14PhoneAllowance = new javax.swing.JTextField();
@@ -135,6 +141,7 @@ public class ProfilePage extends javax.swing.JFrame {
         jLabel14PhoneAllowance = new javax.swing.JLabel();
         jTextFieldDateHired = new javax.swing.JTextField();
         jLabelDateHired = new javax.swing.JLabel();
+        jTextField15Status = new javax.swing.JTextField();
         jPanelGovernment = new javax.swing.JPanel();
         jLabel7SSS = new javax.swing.JLabel();
         jTextField6SSS = new javax.swing.JTextField();
@@ -318,11 +325,8 @@ public class ProfilePage extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanelPersonalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField5PhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelPersonalLayout.createSequentialGroup()
-                                .addComponent(jTextField3Birthday, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooserBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField4Address, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextField4Address, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDateChooserBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanelPersonalLayout.setVerticalGroup(
@@ -339,10 +343,8 @@ public class ProfilePage extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanelPersonalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelPersonalLayout.createSequentialGroup()
-                        .addGroup(jPanelPersonalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3Birthday)
-                            .addComponent(jTextField3Birthday, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3Birthday)
+                        .addGap(24, 24, 24)
                         .addGroup(jPanelPersonalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4Address)
                             .addComponent(jTextField4Address, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -389,10 +391,10 @@ public class ProfilePage extends javax.swing.JFrame {
                     .addComponent(jLabelDateHired, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelEmploymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField15Status, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jTextField16Position)
+                    .addComponent(jTextField16Position, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                     .addComponent(jTextField10ImmediateSupervisor)
-                    .addComponent(jTextFieldDateHired))
+                    .addComponent(jTextFieldDateHired)
+                    .addComponent(jTextField15Status))
                 .addGap(43, 43, 43)
                 .addGroup(jPanelEmploymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11BasicSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -441,12 +443,13 @@ public class ProfilePage extends javax.swing.JFrame {
                             .addComponent(jLabel20HourlyRate)
                             .addComponent(jTextField18HourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanelEmploymentLayout.createSequentialGroup()
-                        .addGroup(jPanelEmploymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel16Position)
-                            .addComponent(jTextField15Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanelEmploymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15Status)
+                        .addGroup(jPanelEmploymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelEmploymentLayout.createSequentialGroup()
+                                .addComponent(jLabel16Position)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanelEmploymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel15Status)
+                                    .addComponent(jTextField15Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jTextField16Position, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanelEmploymentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -586,7 +589,8 @@ public class ProfilePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInformationActionPerformed
 
     private void jButtonRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRequestActionPerformed
-        // TODO add your handling code here:
+        Access.accessRequestCenter(user);
+        this.setVisible(false);
     }//GEN-LAST:event_jButtonRequestActionPerformed
 
     private void jButton3AdminPortalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3AdminPortalActionPerformed
@@ -596,33 +600,7 @@ public class ProfilePage extends javax.swing.JFrame {
 
     private void jButtonUpdateRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateRecordActionPerformed
         InformationService informationservice = new InformationService();
-        
-        if (user instanceof NonAdmin){
-            String validateRequiredTextFields = ComponentsValidator.validateRequiredJTextField(getPersonalInformationTextField());
-            if (!validateRequiredTextFields.isEmpty()) {
-                MessageDialog.showErrorMessage(validateRequiredTextFields);
-                return;
-            }
-
-            String validateRequiredJDateChooser = ComponentsValidator.validateRequiredJDateChooser(jDateChooserBirthday);
-            if (!validateRequiredJDateChooser.isEmpty()) {
-                MessageDialog.showErrorMessage(validateRequiredJDateChooser);
-                return;
-            }
-
-            StringBuilder validationErrors = validatePersonalInformationField();
-            if (!validationErrors.toString().isEmpty()) {
-                MessageDialog.showErrorMessage(validationErrors.toString());
-                System.out.print("Still have Error");
-                return;
-            } 
-            
-            informationservice.updatePersonalInformation(getPersonalInformation());
-            JOptionPane.showMessageDialog(null, "Successfully Updated"); // Confirmation message
-            return;
-        }
-        
-        String validateRequiredTextFields = ComponentsValidator.validateRequiredJTextField(getAllTextField());
+        String validateRequiredTextFields = ComponentsValidator.validateRequiredJTextField(getPersonalInformationTextField());
         if (!validateRequiredTextFields.isEmpty()) {
             MessageDialog.showErrorMessage(validateRequiredTextFields);
             return;
@@ -634,17 +612,17 @@ public class ProfilePage extends javax.swing.JFrame {
             return;
         }
 
-        StringBuilder validationErrors = validateAllTextField();
+        StringBuilder validationErrors = validatePersonalInformationField();
         if (!validationErrors.toString().isEmpty()) {
             MessageDialog.showErrorMessage(validationErrors.toString());
             System.out.print("Still have Error");
             return;
-        }           
+        } 
+
+        informationservice.updatePersonalInformation(getPersonalInformation());
+        JOptionPane.showMessageDialog(null, "Successfully Updated"); // Confirmation message   
             
-        disableAllTextField(); // Disable text fields after saving
-            
-        JOptionPane.showMessageDialog(null, "Successfully Updated"); // Confirmation message
-        
+        disableAllTextField(); // Disable text fields after saving        
     }//GEN-LAST:event_jButtonUpdateRecordActionPerformed
 
     private void jDateChooserBirthdayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooserBirthdayMouseClicked
@@ -668,13 +646,13 @@ public class ProfilePage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProfilePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProfilePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProfilePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProfilePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -732,7 +710,6 @@ public class ProfilePage extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField18HourlyRate;
     private javax.swing.JTextField jTextField1LastName;
     private javax.swing.JTextField jTextField2FirstName;
-    private javax.swing.JTextField jTextField3Birthday;
     private javax.swing.JTextField jTextField4Address;
     private javax.swing.JTextField jTextField5PhoneNumber;
     private javax.swing.JTextField jTextField6SSS;
@@ -747,11 +724,11 @@ public class ProfilePage extends javax.swing.JFrame {
      * This is used when viewing an existing employee record.
      */
     public void disableAllTextField(){
-//        jTextField1LastName.setEnabled(false);
-//        jTextField2FirstName.setEnabled(false);
-//        jTextField3Birthday.setEnabled(false);
-//        jTextField4Address.setEnabled(false);
-//        jTextField5PhoneNumber.setEnabled(false);
+        jTextField1LastName.setEnabled(false);
+        jTextField2FirstName.setEnabled(false);
+        jDateChooserBirthday.setEnabled(false);
+        jTextField4Address.setEnabled(false);
+        jTextField5PhoneNumber.setEnabled(false);
         jTextField6SSS.setEnabled(false);
         jTextField7Philhealth.setEnabled(false);
         jTextField8TIN.setEnabled(false);
@@ -771,7 +748,6 @@ public class ProfilePage extends javax.swing.JFrame {
     public void enableAllTextField(){
         jTextField1LastName.setEnabled(true);
         jTextField2FirstName.setEnabled(true);
-        jTextField3Birthday.setEnabled(true);
         jTextField4Address.setEnabled(true);
         jTextField5PhoneNumber.setEnabled(true);
         jTextField6SSS.setEnabled(true);

@@ -6,13 +6,20 @@
 package Class;
 
 import CSVFileManager.CsvFile;
-import Class.UMS.*;
+import Class.UMS.Admin;
+import Class.UMS.NonAdmin;
+import Class.UMS.User;
 import com.toedter.calendar.JDateChooser;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -171,21 +178,36 @@ public class Input {
      * @return an error message if invalid; otherwise, an empty string.
      */    
     public static String isValidGovernmentIDNumber(JTextField textField, String fieldName, int count) {
-        String text = textField.getText().replace("-", ""); // Remove dashes and trim spaces from the input.
+//        String text = textField.getText().replace("-", ""); // Remove dashes and trim spaces from the input.
+//        int valueDigits = text.length();
+//        
+//        // Check if the input contains only numeric digits.
+//        try {
+//             
+//            int digits = Integer.parseInt(text);
+//            
+//            // Check if the length of the input matches the required count.
+//            if (valueDigits != count) {
+//                return fieldName + " must be between " + count + " digits.\n";
+//            }
+//        } catch (NumberFormatException e) {
+//            return fieldName + " Invalid ID.\n"; 
+//        }
+//        return ""; // Return an empty string if the input is valid.
         
-        // Check if the input contains only numeric digits.
-        try {
-            Integer.valueOf(text); 
-            int valueDigits = text.length();
-            
-            // Check if the length of the input matches the required count.
-            if (valueDigits != count) {
-                return fieldName + " must be between " + count + " digits.\n";
+          String text = textField.getText().replace("-", "").trim(); // Remove dashes and trim spaces
+
+            // Check if the input contains only numeric digits.
+            if (!text.matches("\\d+")) {
+                return fieldName + " must contain only numeric digits.\n";
             }
-        } catch (NumberFormatException e) {
-            return fieldName + " Invalid ID.\n"; 
-        }
-        return ""; // Return an empty string if the input is valid.
+
+            // Check if the length matches the required count.
+            if (text.length() != count) {
+                return fieldName + " must be exactly " + count + " digits.\n";
+            }
+
+            return ""; // Valid input
     }
     
     /**
@@ -276,6 +298,72 @@ public class Input {
             
         } catch (NumberFormatException e) {
             return "Invalid " + fieldName + ". Please enter a valid number."; // Return an error message if parsing fails.
+        }
+    }
+    
+    public static void addDateValidation(JDateChooser startDateChooser, JDateChooser endDateChooser, JTextField totalDaysField) {
+        PropertyChangeListener listener = new DateValidationListener(startDateChooser, endDateChooser, totalDaysField);
+        startDateChooser.getDateEditor().addPropertyChangeListener(listener);
+        endDateChooser.getDateEditor().addPropertyChangeListener(listener);
+    }
+
+    private static class DateValidationListener implements PropertyChangeListener {
+        private final JDateChooser startDateChooser;
+        private final JDateChooser endDateChooser;
+        private final JTextField totalDaysField;
+
+        public DateValidationListener(JDateChooser startDateChooser, JDateChooser endDateChooser, JTextField totalDaysField) {
+            this.startDateChooser = startDateChooser;
+            this.endDateChooser = endDateChooser;
+            this.totalDaysField = totalDaysField;
+        }
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if ("date".equals(evt.getPropertyName())) {
+                validateDates();
+                calculateTotalDays();
+            }
+        }
+
+        private void validateDates() {
+            Date startDate = startDateChooser.getDate();
+            Date endDate = endDateChooser.getDate();
+            LocalDate today = LocalDate.now();
+
+            if (startDate != null) {
+                LocalDate startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (!startLocalDate.isAfter(today)) {
+                    JOptionPane.showMessageDialog(null, "Start Date must be in the future!", "Invalid Date", JOptionPane.ERROR_MESSAGE);
+                    startDateChooser.setDate(null);
+                    endDateChooser.setDate(null); // Reset end date
+                    totalDaysField.setText("");  // Reset total days
+                }
+            }
+
+            if (endDate != null && startDate != null) {
+                LocalDate startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate endLocalDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                if (!endLocalDate.isAfter(startLocalDate)) {
+                    JOptionPane.showMessageDialog(null, "End Date must be after Start Date!", "Invalid Date", JOptionPane.ERROR_MESSAGE);
+                    endDateChooser.setDate(null);
+                    totalDaysField.setText(""); // Reset total days
+                }
+            }
+        }
+
+        private void calculateTotalDays() {
+            Date startDate = startDateChooser.getDate();
+            Date endDate = endDateChooser.getDate();
+
+            if (startDate != null && endDate != null) {
+                LocalDate startLocalDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate endLocalDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                long daysBetween = ChronoUnit.DAYS.between(startLocalDate, endLocalDate);
+                totalDaysField.setText(String.valueOf(daysBetween));
+            }
         }
     }
     

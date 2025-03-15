@@ -4,11 +4,13 @@
  */
 package Class.UMS;
 
-//import CSVFileManager.File;
-import Class.*;
+import Class.Input;
 import Frame.LoginPage;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -160,9 +162,33 @@ public class User {
         this.authenticationResult = authenticationResult;
     }
     
-    public void logout(JFrame jFrame){
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true); // Show login page
-        jFrame.setVisible(false); // Hide the current window
+//    public void logout(JFrame jFrame){
+//        LoginPage loginPage = new LoginPage();
+//        loginPage.setVisible(true); // Show login page
+//        jFrame.setVisible(false); // Hide the current window
+//    }
+    
+    public static void addLogoutListener(JFrame frame) {
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Prevent direct closing
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                logout(frame);
+            }
+        });
+    }
+
+    public static void logout(JFrame frame) {
+        int confirmed = JOptionPane.showConfirmDialog(frame,
+                "Are you sure you want to log out?", "Logout Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmed == JOptionPane.YES_OPTION) {
+//            System.out.println("User logged out successfully.");
+            frame.dispose(); // Closes the frame
+
+            // Optionally, show the login screen
+            new LoginPage().setVisible(true);
+        }
     }
 }

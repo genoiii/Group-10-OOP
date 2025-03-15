@@ -225,6 +225,8 @@ public class DailyAttendance {
         return hoursOvertime;
     }
     
-    
+    public boolean hasOvertime() {
+        return getHoursOvertime() > 0; // Assuming overtime is stored as hours
+    }
     
 }

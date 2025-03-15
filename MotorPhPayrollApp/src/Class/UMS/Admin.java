@@ -4,8 +4,7 @@
  */
 package Class.UMS;
 
-import Class.*;
-
+import Class.Input;
 /**
  *
  * @author 63909

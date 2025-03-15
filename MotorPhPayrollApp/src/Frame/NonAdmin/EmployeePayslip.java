@@ -11,7 +11,6 @@ import Class.TAT.*;
 import Class.UMS.*;
 import Frame.*;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 /**
  *
  * @author Charm
@@ -36,6 +35,8 @@ public class EmployeePayslip extends javax.swing.JFrame {
     public EmployeePayslip(User user) {
         initComponents();
         this.user = user;
+        user.addLogoutListener(this);
+        
         Employee employee = employeeService.getEmployeeInformation(this.user.getEmployeeID());
         
         if (user instanceof NonAdmin){
@@ -601,7 +602,8 @@ public class EmployeePayslip extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInformationActionPerformed
 
     private void jButtonRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRequestActionPerformed
-        // TODO add your handling code here:
+        Access.accessRequestCenter(user);
+        this.setVisible(false);
     }//GEN-LAST:event_jButtonRequestActionPerformed
 
     private void jComboBoxAttendancePeriodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAttendancePeriodActionPerformed
@@ -664,13 +666,13 @@ public class EmployeePayslip extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeePayslip.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeePayslip.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeePayslip.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeeInformation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeePayslip.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

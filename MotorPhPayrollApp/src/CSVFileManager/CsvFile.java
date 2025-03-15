@@ -14,12 +14,17 @@ import java.util.function.Function;
  */
 public enum CsvFile {
     // Enum constants representing different CSV file paths
+    IDCOUNTERS("src/CSVFiles/MotorPH Employee Data - ID Counters.csv"),
     USER("src/CSVFiles/MotorPH Employee Data - User Details.csv"),
+    EMPLOYEEID("src/CSVFiles/MotorPH Employee Data - Employee IDs.csv"),
     EMPLOYEEINFORMATION("src/CSVFiles/MotorPH Employee Data - Employee Details.csv"),
     PERSONAL_RECORD("src/CSVFiles/MotorPH Employee Data - Employee Personal Information.csv"),
     EMPLOYMENT_RECORD("src/CSVFiles/MotorPH Employee Data - Employee Employment Information.csv"),
     GOVERNMENT_RECORD("src/CSVFiles/MotorPH Employee Data - Employee Government Information.csv"),
-    EMPLOYEEID("src/CSVFiles/MotorPH Employee Data - Employee IDs.csv"),
+    REQUEST("src/CSVFiles/MotorPH Employee Data - Request.csv"),
+    LEAVE("src/CSVFiles/MotorPH Employee Data - Leave.csv"),
+    LEAVETYPE("src/CSVFiles/MotorPH Employee Data - Leave Type.csv"),
+    OVERTIME("src/CSVFiles/MotorPH Employee Data - Overtime.csv"),
     DAILYATTENDANCE("src/CSVFiles/MotorPH Employee Data - Daily Attendance.csv"),
     PAYPERIOD("src/CSVFiles/MotorPH Employee Data - Pay Period Schedule.csv");
     
