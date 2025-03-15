@@ -74,7 +74,7 @@ public class Overtime implements Identifiable{
                 // Existing overtime entry (ID is provided)
                 this.overtimeID = overtimeData[0];
                 this.employeeID = overtimeData[1];
-                this.date = Parser.parseLocalDate(overtimeData[2], null, "M/d/yyyy");
+                this.date = Parser.parseLocalDate(overtimeData[2], null);
                 this.startTime = Parser.parseLocalTime(overtimeData[3], null, "H:mm");
                 this.endTime = Parser.parseLocalTime(overtimeData[4], null, "H:mm");
                 this.totalHours = Parser.parseDouble(overtimeData[5], 0.0);

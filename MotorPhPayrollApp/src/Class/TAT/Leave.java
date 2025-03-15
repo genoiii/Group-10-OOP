@@ -54,8 +54,8 @@ public class Leave implements Identifiable {
                 // Existing leave request (ID is provided)
                 this.leaveID = leaveData[0];
                 this.employeeID = leaveData[1];
-                this.startDate = Parser.parseLocalDate(leaveData[2], null, "M/d/yyyy");
-                this.endDate = Parser.parseLocalDate(leaveData[3], null, "M/d/yyyy");
+                this.startDate = Parser.parseLocalDate(leaveData[2], null);
+                this.endDate = Parser.parseLocalDate(leaveData[3], null);
                 this.leaveType = leaveData[4];
                 this.totalDays = Parser.parseInteger(leaveData[5], 0);
                 this.payableDays = Parser.parseInteger(leaveData[6], 0);

@@ -8,12 +8,23 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
  * @author 63909
  */
 public class Parser {
+    // List of common date formats
+    private static final List<String> DATE_FORMATS = Arrays.asList(
+        "M/d/yyyy",      // 2/1/2025
+        "MM/dd/yyyy",    // 02/01/2025
+        "yyyy-MM-dd",    // 2025-02-01
+        "dd-MM-yyyy",    // 01-02-2025
+        "d-M-yyyy",       // 1-2-2025
+        "yyyy-MM-dd"    // 2025-02-01
+    );
 
     // Parse Integer
     public static Integer parseInteger(String value, Integer defaultValue) {
@@ -32,15 +43,32 @@ public class Parser {
             throw new IllegalArgumentException("Invalid double format: '" + value + "'", e);
         }
     }
-
-    // Parse LocalDate (Default ISO Format)
+    
     public static LocalDate parseLocalDate(String value, LocalDate defaultValue) {
-        try {
-            return (value != null && !value.trim().isEmpty()) ? LocalDate.parse(value.trim()) : defaultValue;
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date format: '" + value + "'", e);
+        if (value == null || value.trim().isEmpty()) {
+            return defaultValue;
         }
+
+        for (String pattern : DATE_FORMATS) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+                return LocalDate.parse(value.trim(), formatter);
+            } catch (DateTimeParseException ignored) {
+                // Try the next format
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid date format: '" + value + "'. Supported formats: " + DATE_FORMATS);
     }
+
+//    // Parse LocalDate (Default ISO Format)
+//    public static LocalDate parseLocalDate(String value, LocalDate defaultValue) {
+//        try {
+//            return (value != null && !value.trim().isEmpty()) ? LocalDate.parse(value.trim()) : defaultValue;
+//        } catch (DateTimeParseException e) {
+//            throw new IllegalArgumentException("Invalid date format: '" + value + "'", e);
+//        }
+//    }
 
     // Parse LocalDate with Custom Format
     public static LocalDate parseLocalDate(String value, LocalDate defaultValue, String pattern) {
