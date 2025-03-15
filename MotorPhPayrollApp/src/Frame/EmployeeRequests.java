@@ -585,16 +585,37 @@ public class EmployeeRequests extends javax.swing.JFrame {
     private void jButton2ApproveOTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ApproveOTActionPerformed
         if (!isSelectRecord(jTable2Overtime)) {
             return;
-        }
+        }        
         
         int rowIndex = jTable2Overtime.getSelectedRow(); // Get selected row index
-        String overtimeID = jTable2Overtime.getValueAt(rowIndex, 0).toString(); // Retrieve employee ID
+        String overtimeID = jTable2Overtime.getValueAt(rowIndex, 0).toString(); // Retrieve employee ID                
         
         Overtime updateOvertime = requestService.getOvertimeRecord(overtimeID);
         Request updateRequest = requestService.getRequestRecord(overtimeID);
         
+        // Ensure the request and leave records are found
+        if (updateOvertime == null || updateRequest == null) {
+            JOptionPane.showMessageDialog(null, "Error: Overtime request record not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Check if the request is still pending
+        String status = updateRequest.getStatus();
+        if (status == null || !"Pending".equalsIgnoreCase(status)) {
+            JOptionPane.showMessageDialog(null, "Request is not Pending!", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         updateOvertime.setIsApproved(true);
         updateRequest.approve(admin.getEmployeeID());
+        
+        requestService.saveOvertimeRecord(updateOvertime);
+        requestService.saveRequestRecord(updateRequest);
+        
+        JOptionPane.showMessageDialog(null, "Request Approved!", "Approval", JOptionPane.INFORMATION_MESSAGE);
+        
+        jTable1Leave.removeAll();
+        jTable2Overtime.setModel(requestService.getOvertimeRequestTableModel());
     }//GEN-LAST:event_jButton2ApproveOTActionPerformed
 
     private void jButton1RejectOTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1RejectOTActionPerformed
@@ -608,8 +629,44 @@ public class EmployeeRequests extends javax.swing.JFrame {
         Overtime updateOvertime = requestService.getOvertimeRecord(overtimeID);
         Request updateRequest = requestService.getRequestRecord(overtimeID);
         
+        // Ensure the request and leave records are found
+        if (updateOvertime == null || updateRequest == null) {
+            JOptionPane.showMessageDialog(null, "Error: Overtime request record not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Check if the request is still pending
+        String status = updateRequest.getStatus();
+        if (status == null || !"Pending".equalsIgnoreCase(status)) {
+            JOptionPane.showMessageDialog(null, "Request is not Pending!", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Get rejection reason from user input
+        String rejectionReason = JOptionPane.showInputDialog(null, 
+            "Enter reason for rejection:", 
+            "Reject Request", 
+            JOptionPane.QUESTION_MESSAGE);
+
+        // If user cancels or enters an empty reason, set a default reason
+        if (rejectionReason == null || rejectionReason.trim().isEmpty()) {
+            rejectionReason = "Not approved due to company policies.";
+        }
+        
         updateOvertime.setIsApproved(false);
-        updateRequest.reject(admin.getEmployeeID(), "test");
+        updateRequest.reject(admin.getEmployeeID(), rejectionReason);
+        
+        requestService.saveOvertimeRecord(updateOvertime);
+        requestService.saveRequestRecord(updateRequest);
+        
+        // Show confirmation with the reason
+        JOptionPane.showMessageDialog(null, 
+            "Request Rejected!\nReason: " + rejectionReason, 
+            "Rejection", 
+            JOptionPane.ERROR_MESSAGE);
+        
+        jTable1Leave.removeAll();
+        jTable2Overtime.setModel(requestService.getOvertimeRequestTableModel());
     }//GEN-LAST:event_jButton1RejectOTActionPerformed
 
     private void jComboBox1StatusSelectLeaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1StatusSelectLeaveActionPerformed
@@ -649,10 +706,29 @@ public class EmployeeRequests extends javax.swing.JFrame {
         Leave updateLeave = requestService.getLeaveRecord(leaveID);
         Request updateRequest = requestService.getRequestRecord(leaveID);
         
+        // Ensure the request and leave records are found
+        if (updateLeave == null || updateRequest == null) {
+            JOptionPane.showMessageDialog(null, "Error: Leave request record not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Check if the request is still pending
+        String status = updateRequest.getStatus();
+        if (status == null || !"Pending".equalsIgnoreCase(status)) {
+            JOptionPane.showMessageDialog(null, "Request is not Pending!", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         updateLeave.setIsApproved(true);
         updateRequest.approve(admin.getEmployeeID());
         
+        requestService.saveLeaveRecord(updateLeave);
+        requestService.saveRequestRecord(updateRequest);
         
+        JOptionPane.showMessageDialog(null, "Request Approved!", "Approval", JOptionPane.INFORMATION_MESSAGE);
+        
+        jTable1Leave.removeAll();
+        jTable1Leave.setModel(requestService.getLeaveRequestTableModel());
     }//GEN-LAST:event_jButton1ApproveLeaveActionPerformed
 
     private void jButton1RejectLeaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1RejectLeaveActionPerformed
@@ -666,12 +742,47 @@ public class EmployeeRequests extends javax.swing.JFrame {
         Leave updateLeave = requestService.getLeaveRecord(leaveID);
         Request updateRequest = requestService.getRequestRecord(leaveID);
         
-        updateLeave.setIsApproved(true);
-        updateRequest.reject(admin.getEmployeeID(), "test");
+        // Ensure the request and leave records are found
+        if (updateLeave == null || updateRequest == null) {
+            JOptionPane.showMessageDialog(null, "Error: Leave request record not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
+        // Check if the request is still pending
+        String status = updateRequest.getStatus();
+        if (status == null || !"Pending".equalsIgnoreCase(status)) {
+            JOptionPane.showMessageDialog(null, "Request is not Pending!", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Get rejection reason from user input
+        String rejectionReason = JOptionPane.showInputDialog(null, 
+            "Enter reason for rejection:", 
+            "Reject Request", 
+            JOptionPane.QUESTION_MESSAGE);
+
+        // If user cancels or enters an empty reason, set a default reason
+        if (rejectionReason == null || rejectionReason.trim().isEmpty()) {
+            rejectionReason = "Not approved due to company policies.";
+        }
+        
+        updateLeave.setIsApproved(false);
+        updateRequest.reject(admin.getEmployeeID(), rejectionReason);
+                
         EntityManager leave = new EntityManager(EntityType.LEAVE);
         EntityManager request = new EntityManager(EntityType.REQUEST);
         
+        requestService.saveLeaveRecord(updateLeave);
+        requestService.saveRequestRecord(updateRequest);
+        
+        // Show confirmation with the reason
+        JOptionPane.showMessageDialog(null, 
+            "Request Rejected!\nReason: " + rejectionReason, 
+            "Rejection", 
+            JOptionPane.ERROR_MESSAGE);
+        
+        jTable1Leave.removeAll();
+        jTable1Leave.setModel(requestService.getLeaveRequestTableModel());
 //        try {
 //            leave.saveEntityRecord(updateLeave);
 //            request.saveEntityRecord(updateReques);

@@ -5,15 +5,10 @@
 package Class.EntityManagement;
 
 import Class.CSVFileManagement.CSVFileSerializer;
-import Class.CollectionUtils;
-import Class.IDManagement.Identifiable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author 63909
- * @param <T>
  */
 public class EntityManager  {
     private final EntityType entityType;

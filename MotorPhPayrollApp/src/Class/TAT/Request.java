@@ -31,6 +31,7 @@ public class Request implements Identifiable {
     private String status;
     private String processedBy;
     private LocalDate processedDate;
+    private String remarks;
     
     /**
      * Default constructor for Request.
@@ -81,20 +82,22 @@ public class Request implements Identifiable {
                 this.status = RequestStatus.PENDING.toString(); 
                 this.processedBy = null; // Default to null since it's not provided in this case
                 this.processedDate = null; // Default to null since it's not provided in this case
+                this.remarks = null;
             }
-            case 8 -> {
+            case 9 -> {
                 // Existing request (ID is provided)
                 this.requestID = requestData[0];
                 this.requestTypeID = requestData[1];
                 this.employeeID = requestData[2];
-                this.requestDate = Parser.parseLocalDate(requestData[3], null, "M/d/yyyy");
+                this.requestDate = Parser.parseLocalDate(requestData[3], null);
                 this.reason = requestData[4].isEmpty() ? null : requestData[4];
                 
                 this.status = RequestStatus.valueOf(requestData[5]).toString();
                 this.processedBy = requestData[6].isEmpty() ? null : requestData[6];
                 this.processedDate = requestData[7].isEmpty() ? null : Parser.parseLocalDate(requestData[7], null);
+                this.remarks = requestData[8].isEmpty() ? null : requestData[8];
             }
-            default -> throw new IllegalArgumentException("Invalid input data format. Expected 4 (new) or 8 (existing) parameters.");
+            default -> throw new IllegalArgumentException("Invalid input data format. Expected 4 (new) or 9 (existing) parameters.");
         }
     }
 
@@ -127,13 +130,17 @@ public class Request implements Identifiable {
         this.status = status;
     }
 
-    public String getprocessedBy() {
+    public String getProcessedBy() {
         return processedBy;
     }
 
     public LocalDate getProcessedDate() {
         return processedDate;
     }
+
+    public String getRemarks() {
+        return remarks;
+    }   
     
     public void approve(String processedBy) {
         if (processedBy == null || processedBy.isEmpty()) {
@@ -144,7 +151,7 @@ public class Request implements Identifiable {
         this.processedDate = LocalDate.now();
     }
 
-    public void reject(String processedBy, String reason) {
+    public void reject(String processedBy, String remarks) {
         if (processedBy == null || processedBy.isEmpty()) {
             throw new IllegalArgumentException("Processed by cannot be null or empty.");
         }
@@ -154,7 +161,7 @@ public class Request implements Identifiable {
 
         this.processedBy = processedBy;
         this.status = RequestStatus.REJECTED.toString();
-        this.reason = reason;
+        this.remarks = remarks;
         this.processedDate = LocalDate.now();
     }
 }

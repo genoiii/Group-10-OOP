@@ -20,6 +20,7 @@ public class LoginPage extends javax.swing.JFrame {
      */
     public LoginPage() {
         initComponents();
+        jButton2ForgotPassword.setVisible(false);
         jLabelIncorrectCredentials.setVisible(false); // Hide error message label initially
     }
 
