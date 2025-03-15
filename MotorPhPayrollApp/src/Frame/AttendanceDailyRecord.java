@@ -50,6 +50,8 @@ public class AttendanceDailyRecord extends javax.swing.JFrame {
         initComponents();
         this.employeeID = employeeService.getEmployeeInformation(employee.getEmployeeID());
         this.user = admin;
+        admin.addLogoutListener(this);
+        
         jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
         jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
         jComboBoxAttendancePeriod.setSelectedIndex(-1);
@@ -63,6 +65,8 @@ public class AttendanceDailyRecord extends javax.swing.JFrame {
         this.employeeID = employeeService.getEmployeeInformation(employeeID);
         this.employee = employeeService.getEmployeeInformation(employeeID);
         this.user = admin;
+        admin.addLogoutListener(this);
+        
         jComboBoxAttendancePeriod.setModel(payPeriodList.getComboBoxModel());
         jComboBoxAttendancePeriod.setRenderer(new PromptComboBoxRenderer("Select Pay Period") );
         jComboBoxAttendancePeriod.setSelectedIndex(-1);
@@ -110,7 +114,7 @@ public class AttendanceDailyRecord extends javax.swing.JFrame {
         jLabelOvertime = new javax.swing.JLabel();
         jLabelOvertimeResult = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -144,6 +148,11 @@ public class AttendanceDailyRecord extends javax.swing.JFrame {
         jButton3EmployeeRequest.setForeground(new java.awt.Color(255, 255, 255));
         jButton3EmployeeRequest.setText("Employee Request");
         jButton3EmployeeRequest.setBorder(null);
+        jButton3EmployeeRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3EmployeeRequestActionPerformed(evt);
+            }
+        });
 
         jButton4Payroll.setBackground(new java.awt.Color(0, 102, 153));
         jButton4Payroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -344,9 +353,7 @@ public class AttendanceDailyRecord extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6LogOutActionPerformed
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true);
-        this.setVisible(false);
+        user.logout(this);
     }//GEN-LAST:event_jButton6LogOutActionPerformed
 
     private void jComboBoxAttendancePeriodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAttendancePeriodActionPerformed
@@ -393,6 +400,11 @@ public class AttendanceDailyRecord extends javax.swing.JFrame {
         Access.accessAttendanceBiweekly((Admin) this.user);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4AttendanceActionPerformed
+
+    private void jButton3EmployeeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3EmployeeRequestActionPerformed
+        Access.accessEmployeeRequests((Admin) this.user);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton3EmployeeRequestActionPerformed
 
     /**
      * @param args the command line arguments

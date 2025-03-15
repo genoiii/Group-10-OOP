@@ -36,4 +36,15 @@ public class CollectionUtils {
             (existing, replacement) -> existing // In case of duplicate keys, keep the first occurrence.
         ));
     }
+    
+    
+    
+//    // ✅ New overloaded method that allows key-value extraction
+//    public static <K, V, T> Map<K, V> listToMap(List<T> list, Function<T, K> keyExtractor, Function<T, V> valueExtractor) {
+//        return list.stream().collect(Collectors.toMap(
+//            keyExtractor,
+//            valueExtractor,
+//            (existing, replacement) -> existing // Keep the first occurrence in case of duplicates
+//        ));
+//    }
 }

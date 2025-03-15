@@ -1,0 +1,7 @@
+Leave Type ID,Leave Name,Description,isPaidLeave (1/0),minDaysAllowed,maxDaysAllowed
+1,Vacation,"Time off for personal rest, travel, or leisure.",1,5,15
+2,Sick,Leave for personal illness or medical treatment.,1,3,10
+3,Emergency,Unplanned leave for urgent personal matters.,0,1,5
+4,Maternity,Leave for childbirth and postnatal care.,1,60,105
+5,Paternity,Leave for fathers after childbirth.,1,7,14
+6,Bereavement,Leave due to the death of an immediate family member.,1,3,7

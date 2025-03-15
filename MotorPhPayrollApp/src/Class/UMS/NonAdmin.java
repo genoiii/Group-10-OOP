@@ -4,7 +4,7 @@
  */
 package Class.UMS;
 
-import Class.*;
+import Class.Input;
 
 /**
  *

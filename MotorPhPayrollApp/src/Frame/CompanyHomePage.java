@@ -21,7 +21,8 @@ public class CompanyHomePage extends javax.swing.JFrame {
     public CompanyHomePage(Admin admin) {
         initComponents();
         this.admin = admin;
-
+        admin.addLogoutListener(this);
+       
     }
 
     
@@ -61,7 +62,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
 
         jMenu1.setText("jMenu1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 153));
 
@@ -81,6 +82,11 @@ public class CompanyHomePage extends javax.swing.JFrame {
         jButton3EmployeeRequest.setForeground(new java.awt.Color(255, 255, 255));
         jButton3EmployeeRequest.setText("Employee Request");
         jButton3EmployeeRequest.setBorder(null);
+        jButton3EmployeeRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3EmployeeRequestActionPerformed(evt);
+            }
+        });
 
         jButton4Payroll.setBackground(new java.awt.Color(0, 102, 153));
         jButton4Payroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -200,9 +206,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1EmployeeInformationActionPerformed
 
     private void jButton6LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6LogOutActionPerformed
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true);
-        this.setVisible(false);
+        admin.logout(this);
     }//GEN-LAST:event_jButton6LogOutActionPerformed
 
     private void jButton3SelfServicePortalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3SelfServicePortalActionPerformed
@@ -219,6 +223,11 @@ public class CompanyHomePage extends javax.swing.JFrame {
         Access.accessAttendanceBiweekly(this.admin);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4AttendanceActionPerformed
+
+    private void jButton3EmployeeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3EmployeeRequestActionPerformed
+        Access.accessEmployeeRequests(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton3EmployeeRequestActionPerformed
 
     /**
      * @param args the command line arguments

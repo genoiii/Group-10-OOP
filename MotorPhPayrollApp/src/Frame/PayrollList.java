@@ -26,6 +26,8 @@ public class PayrollList extends javax.swing.JFrame {
     public PayrollList(Admin admin) {
         initComponents();
         this.admin = admin;
+        admin.addLogoutListener(this);
+        
         jTablePayrollList.setModel(payrollService.getPayrollListTableModel());
         jLabelPayrollCount.setText(String.valueOf(payrollService.getPayrollListTableModel().getRowCount()) + " Payroll");
     }
@@ -258,9 +260,7 @@ public class PayrollList extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1EmployeeInformationActionPerformed
 
     private void jButton6LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6LogOutActionPerformed
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true);
-        this.setVisible(false);
+        admin.logout(this);
     }//GEN-LAST:event_jButton6LogOutActionPerformed
 
     private void jButton3SelfServicePortalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3SelfServicePortalActionPerformed
@@ -293,7 +293,8 @@ public class PayrollList extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4AttendanceActionPerformed
 
     private void jButton3EmployeeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3EmployeeRequestActionPerformed
-        // TODO add your handling code here:
+        Access.accessEmployeeRequests(this.admin);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton3EmployeeRequestActionPerformed
 
     private void jButton4PayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4PayrollActionPerformed

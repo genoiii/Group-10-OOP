@@ -55,7 +55,7 @@ public class PayrollService {
         return payrollRecords;
     }
     
-    public DefaultComboBoxModel<String>  getComboBoxModel(){
+    public DefaultComboBoxModel<String> getComboBoxModel(){
         // Convert payPeriodList to a String[]
         String[] payPeriodArray = payPeriodList.stream()
             .map(payPeriod -> payPeriod.getStartDate().format(formatterDate1) + " : " + payPeriod.getEndDate().format(formatterDate1))

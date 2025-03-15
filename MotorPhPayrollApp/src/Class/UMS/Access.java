@@ -8,7 +8,6 @@ import Class.EMS.Employee;
 import Class.PPS.*;
 import Frame.*;
 import Frame.NonAdmin.*;
-import java.text.ParseException;
 import javax.swing.JFrame;
 
 /**
@@ -154,5 +153,17 @@ public class Access {
         PayrollSummaryPage payrollSummaryPage = new PayrollSummaryPage(payPeriod);
         payrollSummaryPage.setVisible(true);
         return payrollSummaryPage;
+    }
+    
+    public static JFrame accessEmployeeRequests(Admin admin) {
+        EmployeeRequests employeeRequests = new EmployeeRequests(admin);
+        employeeRequests.setVisible(true);
+        return employeeRequests;
+    }
+    
+    public static JFrame accessRequestCenter(User user) {
+        RequestCenter employeeRequestCenter = new RequestCenter(user);
+        employeeRequestCenter.setVisible(true);
+        return employeeRequestCenter;
     }
 }

@@ -333,6 +333,9 @@
               <Border info="null"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3EmployeeRequestActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton4Payroll">
           <Properties>
@@ -614,7 +617,7 @@
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserBirthday">
       <Properties>
-        <Property name="dateFormatString" type="java.lang.String" value="M/dd/yyyy"/>
+        <Property name="dateFormatString" type="java.lang.String" value="M/d/yyyy"/>
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jDateChooserBirthdayMouseClicked"/>

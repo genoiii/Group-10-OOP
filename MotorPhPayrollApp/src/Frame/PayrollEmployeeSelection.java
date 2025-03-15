@@ -98,7 +98,7 @@ public class PayrollEmployeeSelection extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTablePayrollList);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 153));
 

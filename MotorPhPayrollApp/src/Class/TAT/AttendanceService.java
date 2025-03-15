@@ -11,9 +11,9 @@ import Class.PPS.PayPeriod;
 import Class.TableModel;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,6 +27,25 @@ public class AttendanceService {
     public AttendanceService() {
         this.dailyAttendanceList = CsvFile.DAILYATTENDANCE.readFile(DailyAttendance::new);
         this.employeeList = CsvFile.EMPLOYEEINFORMATION.readFile(Employee::new);
+    }
+    
+    public DailyAttendance getEmployeeDailyAttendance(Employee employee, LocalDate date){
+        return dailyAttendanceList.stream()
+        .filter(dtr -> dtr.getEmployee().getEmployeeID().equals(employee.getEmployeeID()))
+        .filter(dtr -> dtr.getDate().equals(date))
+        .findFirst() // Get the first match (if any)
+        .orElse(null); // Return null if no record is found
+    }
+    
+    public DefaultComboBoxModel<String> getOvertimeDatesComboBoxModel(List<DailyAttendance> dtrList){
+        // Filter attendance records with overtime and extract the date
+        String[] overtimeDatesArray = dtrList.stream()
+                                             .filter(dtr -> dtr.hasOvertime()) // Filter records with overtime
+                                             .map(dtr -> dtr.getDate().toString()) // Convert date to string
+                                             .toArray(String[]::new);
+
+        // Return a DefaultComboBoxModel containing only the dates with overtime
+        return new DefaultComboBoxModel<>(overtimeDatesArray);
     }
     
     public List<DailyAttendance> getFilteredDailyAttendance(Employee employee, PayPeriod payPeriod){

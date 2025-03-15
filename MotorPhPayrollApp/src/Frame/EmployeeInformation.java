@@ -36,6 +36,8 @@ public class EmployeeInformation extends javax.swing.JFrame {
     public EmployeeInformation(Admin admin) {
         initComponents();
         this.admin = admin;
+        admin.addLogoutListener(this);
+        
         jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Populate table with employee data
     }
 
@@ -63,7 +65,7 @@ public class EmployeeInformation extends javax.swing.JFrame {
         jButton2DeleteEmployeeRecord = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -97,6 +99,11 @@ public class EmployeeInformation extends javax.swing.JFrame {
         jButton3EmployeeRequest.setForeground(new java.awt.Color(255, 255, 255));
         jButton3EmployeeRequest.setText("Employee Request");
         jButton3EmployeeRequest.setBorder(null);
+        jButton3EmployeeRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3EmployeeRequestActionPerformed(evt);
+            }
+        });
 
         jButton4Payroll.setBackground(new java.awt.Color(0, 102, 153));
         jButton4Payroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -333,7 +340,7 @@ public class EmployeeInformation extends javax.swing.JFrame {
         
         // Show confirmation dialog before deleting the record
         int result = JOptionPane.showConfirmDialog(null, "Are you sure to delete the Employee Record", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.NO_OPTION) {
+            if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
                 return; // Cancel the deletion if the user selects "No"
             }
             
@@ -391,6 +398,11 @@ public class EmployeeInformation extends javax.swing.JFrame {
         Access.accessAttendanceBiweekly((Admin) this.admin);
         this.setVisible(false);
     }//GEN-LAST:event_jButton4AttendanceActionPerformed
+
+    private void jButton3EmployeeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3EmployeeRequestActionPerformed
+        Access.accessEmployeeRequests(this.admin);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton3EmployeeRequestActionPerformed
 
     /**
      * @param args the command line arguments

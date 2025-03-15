@@ -8,9 +8,11 @@ package Class.TAT;
  *
  * @author 63909
  */
-import Class.EMS.Employee;
-import Class.EMS.EmployeeService;
-import Class.Formatter;
+import Class.EntityManagement.EntityManager;
+import Class.EntityManagement.EntityType;
+import Class.IDManagement.IDManager;
+import Class.IDManagement.Identifiable;
+import Class.Parser;
 import java.time.LocalDate;
 
 /**
@@ -20,14 +22,14 @@ import java.time.LocalDate;
  * system interactions. Extend this class with additional fields and methods as needed to capture the specifics
  * of each request type.</p>
  */
-public class Request {
+public class Request implements Identifiable {
     private String requestID;
     private String requestTypeID;
-    private Employee employeeID;
+    private String employeeID;
     private LocalDate requestDate;
     private String reason;
     private String status;
-    private Employee approvedBy;
+    private String processedBy;
     private LocalDate processedDate;
     
     /**
@@ -59,29 +61,54 @@ public class Request {
      * @throws IllegalArgumentException if requestData is null or contains fewer than 8 elements.
      */
     public Request(String[] requestData) {
-        // Validate input length to ensure at least 8 elements are provided.
-        if (requestData == null || requestData.length < 8) {
-            throw new IllegalArgumentException("Insufficient request data provided.");
+        if (requestData == null) {
+            throw new IllegalArgumentException("Request data cannot be null.");
         }
         
-        EmployeeService employeeService = new EmployeeService(); // Create an instance of EmployeeService to retrieve Employee objects.
-        
-        this.requestID = requestData[0];
-        this.requestTypeID = requestData[1];
-        this.employeeID = employeeService.getEmployeeInformation(requestData[2]);
-        this.requestDate = Formatter.formatDate(requestData[3]);
-        this.reason = requestData[4];
-        this.status = requestData[5];        
-        this.approvedBy = requestData[6].isEmpty() ? null : employeeService.getEmployeeInformation(requestData[6]); // Assuming approvedBy is another Employee object (can be null if not yet approved)
-        this.processedDate = requestData[7].isEmpty() ? null : Formatter.formatDate(requestData[7]);
+        switch (requestData.length) {
+            case 4 -> {
+                // New request (ID is generated)
+                EntityManager request = new EntityManager(EntityType.REQUEST);
+                this.requestID = IDManager.generateID(request.getEntityType().getIdPrefix());
+                IDManager.saveIDCounters();
+                
+                this.requestTypeID = requestData[0];
+                this.employeeID = requestData[1];
+                this.requestDate = Parser.parseLocalDate(requestData[2], null);
+                
+                this.reason = requestData[3].isEmpty() ? null : requestData[3];
+                
+                this.status = RequestStatus.PENDING.toString(); 
+                this.processedBy = null; // Default to null since it's not provided in this case
+                this.processedDate = null; // Default to null since it's not provided in this case
+            }
+            case 8 -> {
+                // Existing request (ID is provided)
+                this.requestID = requestData[0];
+                this.requestTypeID = requestData[1];
+                this.employeeID = requestData[2];
+                this.requestDate = Parser.parseLocalDate(requestData[3], null, "M/d/yyyy");
+                this.reason = requestData[4].isEmpty() ? null : requestData[4];
+                
+                this.status = RequestStatus.valueOf(requestData[5]).toString();
+                this.processedBy = requestData[6].isEmpty() ? null : requestData[6];
+                this.processedDate = requestData[7].isEmpty() ? null : Parser.parseLocalDate(requestData[7], null);
+            }
+            default -> throw new IllegalArgumentException("Invalid input data format. Expected 4 (new) or 8 (existing) parameters.");
+        }
     }
 
     // Getters and Setters
-    public String getRequestID() {
+    @Override
+    public String getID() {
         return requestID;
     }
 
-    public Employee getEmployeeID() {
+    public String getRequestTypeID() {
+        return requestTypeID;
+    }
+    
+    public String getEmployeeID() {
         return employeeID;
     }
 
@@ -96,9 +123,39 @@ public class Request {
     public String getStatus() {
         return status;
     }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-    public Employee getApprovedBy() {
-        return approvedBy;
+    public String getprocessedBy() {
+        return processedBy;
+    }
+
+    public LocalDate getProcessedDate() {
+        return processedDate;
+    }
+    
+    public void approve(String processedBy) {
+        if (processedBy == null || processedBy.isEmpty()) {
+            throw new IllegalArgumentException("Processed by cannot be null or empty.");
+        }
+        this.processedBy = processedBy;
+        this.status = RequestStatus.APPROVED.toString();
+        this.processedDate = LocalDate.now();
+    }
+
+    public void reject(String processedBy, String reason) {
+        if (processedBy == null || processedBy.isEmpty()) {
+            throw new IllegalArgumentException("Processed by cannot be null or empty.");
+        }
+        if (reason == null || reason.isEmpty()) {
+            throw new IllegalArgumentException("Rejection reason cannot be null or empty.");
+        }
+
+        this.processedBy = processedBy;
+        this.status = RequestStatus.REJECTED.toString();
+        this.reason = reason;
+        this.processedDate = LocalDate.now();
     }
 }
 

@@ -5,6 +5,10 @@
 package Class;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * Utility class for formatting values.
@@ -13,7 +17,38 @@ import java.text.DecimalFormat;
  * It is not meant to be instantiated.</p>
  */
 public class Formatter {
-    private static final DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+    private static final DecimalFormat formatterDecimal = new DecimalFormat("#,##0.00");
+    private static final DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("M/d/yyyy");
+    private static final DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("H:mm");
+    
+    public static LocalDate reformatDate(LocalDate date, String format) {
+        if (date == null || format == null || format.isEmpty()) {
+            throw new IllegalArgumentException("Date or format cannot be null/empty.");
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        
+        // Convert LocalDate to formatted String and parse it back
+        String formattedDate = date.format(formatter);
+        return LocalDate.parse(formattedDate, formatter);
+    }
+    
+    public static LocalTime formatTime(String dateTime) {
+        try {
+            return LocalTime.parse(dateTime, formatterTime); // Convert string to LocalDateTime
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date-time format: " + dateTime);
+            return null; // Return null if parsing fails
+        }
+    }
+    
+    public static LocalDate formatDate(String date) {
+        try {
+            return LocalDate.parse(date, formatterDate); // Convert string to LocalDate
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format: " + date);
+            return null; // Return null if parsing fails
+        }
+    }
     
     /**
      * Formats an SSS number to the pattern "XX-XXXXXXX-X".
@@ -62,7 +97,7 @@ public class Formatter {
     public static String formatAmount(String amount) {
         try {
             double value = Double.parseDouble(amount.replaceAll(",", "").trim()); // Remove commas, trim spaces, and parse the string into a double
-            return decimalFormat.format(value); // Format the number and return the formatted string
+            return formatterDecimal.format(value); // Format the number and return the formatted string
         } catch (NumberFormatException e) {
             return amount; // Return original if not a valid number
         }

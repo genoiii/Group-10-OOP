@@ -10,6 +10,8 @@ import Class.Input;
 import Class.MessageDialog;
 import Class.UMS.*;
 import Class.UMS.User;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 /**
@@ -48,6 +50,8 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
         this.isNewEmployee = true;  
         this.employeeID = "";
         this.user = admin;
+        admin.addLogoutListener(this);
+        
         jButton2SaveChanges.setText("Add Employee"); // Change button text to indicate adding a new employee     
     }
     
@@ -66,6 +70,7 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
         this.employeeID = employeeID;     
         this.employee = new EmployeeService().getEmployeeInformation(employeeID);
         this.user = user;
+        user.addLogoutListener(this);
         
         // Populate the text fields with the existing employee data
         jTextField1LastName.setText(this.employee.getLastName());
@@ -92,6 +97,13 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
         if (this.user instanceof NonAdmin){
             jPanelAdmin.setVisible(false);
         }
+        
+        jDateChooserBirthday.getDateEditor().getUiComponent().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                jDateChooserBirthday.setEnabled(true);
+            }
+        });
     }
 
     /**
@@ -186,6 +198,11 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
         jButton3EmployeeRequest.setForeground(new java.awt.Color(255, 255, 255));
         jButton3EmployeeRequest.setText("Employee Request");
         jButton3EmployeeRequest.setBorder(null);
+        jButton3EmployeeRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3EmployeeRequestActionPerformed(evt);
+            }
+        });
 
         jButton4Payroll.setBackground(new java.awt.Color(0, 102, 153));
         jButton4Payroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -414,7 +431,7 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
             }
         });
 
-        jDateChooserBirthday.setDateFormatString("M/dd/yyyy");
+        jDateChooserBirthday.setDateFormatString("M/d/yyyy");
         jDateChooserBirthday.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jDateChooserBirthdayMouseClicked(evt);
@@ -599,9 +616,7 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1EmployeeInformationActionPerformed
 
     private void jButton6LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6LogOutActionPerformed
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true);
-        this.setVisible(false);
+        user.logout(this);
     }//GEN-LAST:event_jButton6LogOutActionPerformed
 
     /**
@@ -732,15 +747,55 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4AttendanceActionPerformed
 
     private void jDateChooserBirthdayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooserBirthdayMouseClicked
-        jDateChooserBirthday.setEnabled(true);
+//        jDateChooserBirthday.setEnabled(true);        
     }//GEN-LAST:event_jDateChooserBirthdayMouseClicked
 
-    /**
+    private void jButton3EmployeeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3EmployeeRequestActionPerformed
+        Access.accessEmployeeRequests((Admin) this.user);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton3EmployeeRequestActionPerformed
+
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//  
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ViewEmployeeDetails().setVisible(true);
+//            }
+//        });
+//    }
+    
+        /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-  
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ViewEmployeeDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ViewEmployeeDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ViewEmployeeDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ViewEmployeeDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -808,7 +863,7 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
     public void disableAllTextField(){
         jTextField1LastName.setEnabled(false);
         jTextField2FirstName.setEnabled(false);
-//        jDateChooserBirthday.setEnabled(false);
+        jDateChooserBirthday.setEnabled(false);
         jTextField4Address.setEnabled(false);
         jTextField5PhoneNumber.setEnabled(false);
         jTextField6SSS.setEnabled(false);
@@ -904,7 +959,7 @@ public class ViewEmployeeDetails extends javax.swing.JFrame {
         StringBuilder errors = new StringBuilder();
     
         appendError(errors, Input.isValidPhoneNumber(jTextField5PhoneNumber.getText()));
-        appendError(errors, Input.isValidBirthday(jDateChooserBirthday, "M/dd/yyyy"));
+        appendError(errors, Input.isValidBirthday(jDateChooserBirthday, "M/d/yyyy"));
         appendError(errors, Input.isValidGovernmentIDNumber(jTextField6SSS, "SSS", 10));
         appendError(errors, Input.isValidGovernmentIDNumber(jTextField7Philhealth, "PhilHealth", 12));
         appendError(errors, Input.isValidGovernmentIDNumber(jTextField8TIN, "TIN", 12));

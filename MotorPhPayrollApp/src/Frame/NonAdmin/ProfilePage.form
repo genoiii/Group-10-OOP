@@ -33,7 +33,7 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="61" max="32767" attributes="0"/>
                       <Component id="jButtonUpdateRecord" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
@@ -318,12 +318,8 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jTextField5PhoneNumber" min="-2" pref="147" max="-2" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Component id="jTextField3Birthday" min="-2" pref="147" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jDateChooserBirthday" min="-2" pref="155" max="-2" attributes="0"/>
-                                  </Group>
                                   <Component id="jTextField4Address" alignment="0" min="-2" pref="616" max="-2" attributes="0"/>
+                                  <Component id="jDateChooserBirthday" min="-2" pref="155" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -347,11 +343,8 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel3Birthday" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField3Birthday" min="-2" pref="22" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jLabel3Birthday" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel4Address" min="-2" max="-2" attributes="0"/>
                                   <Component id="jTextField4Address" min="-2" pref="22" max="-2" attributes="0"/>
@@ -388,8 +381,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Birthday"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextField3Birthday">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4Address">
               <Properties>
@@ -437,10 +428,10 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTextField15Status" pref="150" max="32767" attributes="0"/>
-                          <Component id="jTextField16Position" max="32767" attributes="0"/>
+                          <Component id="jTextField16Position" pref="150" max="32767" attributes="0"/>
                           <Component id="jTextField10ImmediateSupervisor" max="32767" attributes="0"/>
                           <Component id="jTextFieldDateHired" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextField15Status" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -501,14 +492,16 @@
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel16Position" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField15Status" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel15Status" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField16Position" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel16Position" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="jLabel15Status" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jTextField15Status" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jTextField16Position" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -542,8 +535,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Position"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextField15Status">
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField16Position">
             </Component>
@@ -597,6 +588,8 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Date Hired"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField15Status">
             </Component>
           </SubComponents>
         </Container>
