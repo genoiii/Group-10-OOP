@@ -374,8 +374,14 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField1LastName">
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextField1LastNameMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField2FirstName">
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextField2FirstNameMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel3Birthday">
               <Properties>
@@ -388,6 +394,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField4Address">
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextField4AddressMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel6PhoneNumber">
               <Properties>
@@ -395,6 +404,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField5PhoneNumber">
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTextField5PhoneNumberMouseClicked"/>
+              </Events>
             </Component>
             <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserBirthday">
               <Properties>

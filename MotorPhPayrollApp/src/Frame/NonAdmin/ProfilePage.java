@@ -289,11 +289,35 @@ public class ProfilePage extends javax.swing.JFrame {
 
         jLabel2FirstName.setText("First Name");
 
+        jTextField1LastName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField1LastNameMouseClicked(evt);
+            }
+        });
+
+        jTextField2FirstName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField2FirstNameMouseClicked(evt);
+            }
+        });
+
         jLabel3Birthday.setText("Birthday");
 
         jLabel4Address.setText("Address");
 
+        jTextField4Address.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField4AddressMouseClicked(evt);
+            }
+        });
+
         jLabel6PhoneNumber.setText("Phone Number");
+
+        jTextField5PhoneNumber.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField5PhoneNumberMouseClicked(evt);
+            }
+        });
 
         jDateChooserBirthday.setDateFormatString("M/dd/yyyy");
         jDateChooserBirthday.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -628,6 +652,22 @@ public class ProfilePage extends javax.swing.JFrame {
     private void jDateChooserBirthdayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooserBirthdayMouseClicked
         jDateChooserBirthday.setEnabled(true);
     }//GEN-LAST:event_jDateChooserBirthdayMouseClicked
+
+    private void jTextField1LastNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1LastNameMouseClicked
+        jTextField1LastName.setEnabled(true);
+    }//GEN-LAST:event_jTextField1LastNameMouseClicked
+
+    private void jTextField2FirstNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2FirstNameMouseClicked
+        jTextField2FirstName.setEnabled(true);
+    }//GEN-LAST:event_jTextField2FirstNameMouseClicked
+
+    private void jTextField4AddressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField4AddressMouseClicked
+        jTextField4Address.setEnabled(true);
+    }//GEN-LAST:event_jTextField4AddressMouseClicked
+
+    private void jTextField5PhoneNumberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField5PhoneNumberMouseClicked
+        jTextField5PhoneNumber.setEnabled(true);
+    }//GEN-LAST:event_jTextField5PhoneNumberMouseClicked
 
     /**
      * @param args the command line arguments
