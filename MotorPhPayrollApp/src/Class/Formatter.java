@@ -5,10 +5,13 @@
 package Class;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Utility class for formatting values.
@@ -41,13 +44,19 @@ public class Formatter {
         }
     }
     
-    public static LocalDate formatDate(String date) {
+    public static LocalDate formatLocalDate(String date) {
         try {
             return LocalDate.parse(date, formatterDate); // Convert string to LocalDate
         } catch (DateTimeParseException e) {
             System.out.println("Invalid date format: " + date);
             return null; // Return null if parsing fails
         }
+    }
+    
+    public static String formatDate(Date date, String outputPattern) {
+        if (date == null) return "null";
+        SimpleDateFormat sdf = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
+        return sdf.format(date);
     }
     
     /**

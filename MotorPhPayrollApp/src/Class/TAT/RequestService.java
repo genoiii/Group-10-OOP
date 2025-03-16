@@ -80,15 +80,18 @@ public class RequestService {
         
         EmployeeService employeeService = new EmployeeService();
         
-        for (Leave leaveRequest : leaveList) {
-            
+        for (Leave leaveRequest : leaveList) {            
             Employee employee = employeeService.getEmployeeInformation(leaveRequest.getEmployeeID());
             Request request = getRequestRecord(leaveRequest.getID());
+            
+            // Handle case where employee is null (terminated)
+            String employeeName = (employee != null) ? employee.getFirstName() + " " + employee.getLastName() : "Terminated Employee";
+
             // Construct a row using the aggregated values.
             Object[] row = {
                 leaveRequest.getID(),
                 request.getRequestDate(),
-                employee.getFirstName() + " " + employee.getLastName(),
+                employeeName,
                 leaveRequest.getStartDate(),
                 leaveRequest.getEndDate(),
                 leaveRequest.getLeaveType(),
@@ -119,15 +122,18 @@ public class RequestService {
         
         EmployeeService employeeService = new EmployeeService();
         
-        for (Overtime overtimeRequest : overtimeList) {
-            
+        for (Overtime overtimeRequest : overtimeList) {            
             Employee employee = employeeService.getEmployeeInformation(overtimeRequest.getEmployeeID());
             Request request = getRequestRecord(overtimeRequest.getID());
+            
+            // Handle case where employee is null (terminated)
+            String employeeName = (employee != null) ? employee.getFirstName() + " " + employee.getLastName() : "Terminated Employee";
+            
             // Construct a row using the aggregated values.
             Object[] row = {
                 overtimeRequest.getID(),
                 request.getRequestDate(),
-                employee.getFirstName() + " " + employee.getLastName(),
+                employeeName,
                 overtimeRequest.getStartTime(),
                 overtimeRequest.getEndTime(),
                 overtimeRequest.getTotalHours(),

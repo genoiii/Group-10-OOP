@@ -4,9 +4,7 @@
  */
 package Class.EMS;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
+import Class.Parser;
 import java.util.Date;
 
 /**
@@ -17,8 +15,6 @@ import java.util.Date;
  * with additional fields and methods as needed.</p>
  */
 public class PersonalInformation extends Information {
-    private static final DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("M/d/yyyy");
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/yyyy");
     private String firstName;
     private String lastName;
     private Date birthday;
@@ -49,7 +45,7 @@ public class PersonalInformation extends Information {
         
         // Validate that the personalData array contains the expected number of elements.
         if (personalData.length < 6) {
-            throw new IllegalArgumentException("Invalid data: Employee information must have  elements.");
+            throw new IllegalArgumentException("Invalid data: Employee information must have 6 elements.");
         }
         
         // Assign first name and last name from the personalData array.
@@ -57,13 +53,8 @@ public class PersonalInformation extends Information {
         this.firstName = personalData[2];               
         this.address = personalData[4];
         this.phoneNumber = personalData[5];
-        
-        // Parse the birthday using the provided date format.
-        try {
-            this.birthday = dateFormat.parse(personalData[3]);
-        } catch (ParseException ex) {
-            // Exception is caught silently. Consider logging or handling the error appropriately.
-        }   
+        this.birthday = Parser.parseDate(personalData[3], null);
+ 
     }  
     
     /**
@@ -78,7 +69,7 @@ public class PersonalInformation extends Information {
         return new String[] {employeeID,                            
                             lastName,
                             firstName,
-                            dateFormat.format(birthday),
+                            birthday.toString(),
                             address,
                             phoneNumber
                             };

@@ -12,6 +12,8 @@ import Class.UMS.User;
 import com.toedter.calendar.JDateChooser;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -177,24 +179,7 @@ public class Input {
      * @param count     the required number of digits.
      * @return an error message if invalid; otherwise, an empty string.
      */    
-    public static String isValidGovernmentIDNumber(JTextField textField, String fieldName, int count) {
-//        String text = textField.getText().replace("-", ""); // Remove dashes and trim spaces from the input.
-//        int valueDigits = text.length();
-//        
-//        // Check if the input contains only numeric digits.
-//        try {
-//             
-//            int digits = Integer.parseInt(text);
-//            
-//            // Check if the length of the input matches the required count.
-//            if (valueDigits != count) {
-//                return fieldName + " must be between " + count + " digits.\n";
-//            }
-//        } catch (NumberFormatException e) {
-//            return fieldName + " Invalid ID.\n"; 
-//        }
-//        return ""; // Return an empty string if the input is valid.
-        
+    public static String isValidGovernmentIDNumber(JTextField textField, String fieldName, int count) {        
           String text = textField.getText().replace("-", "").trim(); // Remove dashes and trim spaces
 
             // Check if the input contains only numeric digits.
@@ -271,6 +256,36 @@ public class Input {
             return ""; // No error, valid birthday
         } catch (DateTimeParseException e) {
             return "Invalid date format. Please use M/dd/yyyy."; // Return an error message for an invalid date format.
+        }
+    }
+
+    public static String isValidDateHired(JDateChooser jDateChooser, String format) {
+        String date = ((JTextField) jDateChooser.getDateEditor().getUiComponent()).getText(); // Get the date text from JDateChooser
+
+        // Allow empty/null values
+        if (date == null || date.trim().isEmpty()) {
+            return ""; // No error, empty date is allowed
+        }
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+            LocalDate hiredDate = LocalDate.parse(date, formatter);
+            LocalDate today = LocalDate.now();
+
+            // Check if the date hired is in the future
+            if (hiredDate.isAfter(today)) {
+                return "Date Hired cannot be in the future.";
+            }
+
+            // Optional: Prevent unrealistically old dates (e.g., before 2000)
+            LocalDate minDate = LocalDate.of(2000, 1, 1);
+            if (hiredDate.isBefore(minDate)) {
+                return "Date Hired cannot be before 01-01-2000.";
+            }
+
+            return ""; // No error, valid date
+        } catch (DateTimeParseException e) {
+            return "Invalid date format. Please use " + format + "."; // Return an error message for an invalid date format
         }
     }
     

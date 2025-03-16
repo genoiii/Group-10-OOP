@@ -4,8 +4,9 @@
  */
 package Class.EMS;
 
-import java.time.LocalDate;
+import Class.Parser;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * Represents employment-related information for an employee.
@@ -21,7 +22,7 @@ public class EmploymentInformation extends Information {
     private Job jobTitle; 
     private String employmentType; 
     private String employmentStatus;
-    private LocalDate dateHired; 
+    private Date dateHired; 
     private String immediateSupervisor;
     
     // Salary and allowances
@@ -46,14 +47,14 @@ public class EmploymentInformation extends Information {
         
         // Ensure the provided employment data array has the expected number of elements.
         if (employmentData.length < 12) {
-            throw new IllegalArgumentException("Invalid data: Employee information must have 5 elements.");
+            throw new IllegalArgumentException("Invalid data: Employee information must have 12 elements.");
         }
         
         // Initialize employment-related fields using the data array.
         this.jobTitle = new Job(employmentData[1]);
         this.employmentType = employmentData[2];
         this.employmentStatus = employmentData[3];
-        this.dateHired = LocalDate.parse(employmentData[4], formatterDate);
+        this.dateHired = Parser.parseDate(employmentData[4], null);
         this.immediateSupervisor = employmentData[5];
         this.basicSalary = employmentData[6];
         this.riceSubsidy = employmentData[7];
@@ -76,7 +77,14 @@ public class EmploymentInformation extends Information {
                             jobTitle.getJobName(),
                             employmentType,
                             employmentStatus,
-                            dateHired.toString()
+                            dateHired.toString(),
+                            immediateSupervisor,
+                            basicSalary,
+                            riceSubsidy,
+                            phoneAllowance,
+                            clothingAllowance,
+                            grossSemiMonthlyRate,
+                            hourlyRate,
                             };
     }
     
@@ -97,7 +105,7 @@ public class EmploymentInformation extends Information {
         return employmentStatus;
     }
 
-    public LocalDate getDateHired() {
+    public Date getDateHired() {
         return dateHired;
     }
 
