@@ -4,12 +4,16 @@
  */
 package Class;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -18,12 +22,14 @@ import java.util.List;
 public class Parser {
     // List of common date formats
     private static final List<String> DATE_FORMATS = Arrays.asList(
-        "M/d/yyyy",      // 2/1/2025
-        "MM/dd/yyyy",    // 02/01/2025
-        "yyyy-MM-dd",    // 2025-02-01
-        "dd-MM-yyyy",    // 01-02-2025
-        "d-M-yyyy",       // 1-2-2025
-        "yyyy-MM-dd"    // 2025-02-01
+        "M/d/yyyy",                         // 2/1/2025
+        "MM/dd/yyyy",                       // 02/01/2025
+        "yyyy-MM-dd",                       // 2025-02-01
+        "dd-MM-yyyy",                       // 01-02-2025
+        "d-M-yyyy",                         // 1-2-2025
+        "yyyy-MM-dd",                       // 2025-02-01
+        "EEE MMM dd HH:mm:ss zzz yyyy",     // Fri Dec 18 00:00:00 CST 1970 (With timezone)
+        "EEE MMM dd HH:mm:ss yyyy"          // Fri Dec 18 00:00:00 1970 (Without timezone)
     );
 
     // Parse Integer
@@ -42,6 +48,24 @@ public class Parser {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid double format: '" + value + "'", e);
         }
+    }
+    
+    public static Date parseDate(String value, Date defaultValue) {
+        if (value == null || value.trim().isEmpty()) {
+            return defaultValue;
+        }
+
+        for (String pattern : DATE_FORMATS) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.ENGLISH);
+                sdf.setLenient(false); // Ensures strict date parsing
+                return sdf.parse(value.trim());
+            } catch (ParseException ignored) {
+                // Try the next format
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid date format: '" + value + "'. Supported formats: " + DATE_FORMATS);
     }
     
     public static LocalDate parseLocalDate(String value, LocalDate defaultValue) {

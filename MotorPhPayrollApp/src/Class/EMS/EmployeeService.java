@@ -63,7 +63,38 @@ public class EmployeeService {
     public void updateInformation(Employee updatedEmployee){
         // Check if the employee exists in the map.
         if (!employeeMapByEmployeeID.containsKey(updatedEmployee.getEmployeeID())) return; // Employee not found; exit the method.
-
+        
+        employeeMapByEmployeeID.replace(updatedEmployee.getEmployeeID(), updatedEmployee); // Update the employee information in the map.
+        
+        // Update the employee information in the list while preserving order.
+        for (int i = 0; i < employeeList.size(); i++) {
+            if (employeeList.get(i).getEmployeeID().equals(updatedEmployee.getEmployeeID())) {
+                employeeList.set(i, updatedEmployee);
+                break;
+            }
+        }
+        
+        // Convert the updated employee list to a List of String arrays.
+        List<String[]> updatedEmployeeRecord = new ArrayList<>();
+        for (Employee employee : employeeList) {
+            updatedEmployeeRecord.add(employee.getEmployeeInformation());
+        }
+        
+        CsvFile.EMPLOYEEINFORMATION.writeFile(updatedEmployeeRecord); // Write the updated records to the CSV file.
+    }
+    
+    public void updateInformation(Employee updatedEmployee, 
+                                    PersonalInformation updatedPersonalInformation, 
+                                    EmploymentInformation updatedEmploymentInformation, 
+                                    GovernmentInformation updatedGovernmentInformation){
+        // Check if the employee exists in the map.
+        if (!employeeMapByEmployeeID.containsKey(updatedEmployee.getEmployeeID())) return; // Employee not found; exit the method.
+        
+        InformationService informationService = new InformationService();        
+        informationService.updatePersonalInformation(updatedPersonalInformation);
+        informationService.updateEmploymentInformation(updatedEmploymentInformation);
+        informationService.updateGovernmentInformation(updatedGovernmentInformation);
+        
         employeeMapByEmployeeID.replace(updatedEmployee.getEmployeeID(), updatedEmployee); // Update the employee information in the map.
         
         // Update the employee information in the list while preserving order.
@@ -95,7 +126,12 @@ public class EmployeeService {
     public void deleteEmployee(String employeeID){
         // Check if the employee exists in the map (optional logging, currently commented out).
         if (!employeeMapByEmployeeID.containsKey(employeeID)) return; // Employee not found; exit the method.
-
+        
+        InformationService informationService = new InformationService();        
+        informationService.deletePersonalInformation(employeeID);
+        informationService.deleteEmploymentInformation(employeeID);
+        informationService.deleteGovernmentInformation(employeeID);
+        
         employeeList.removeIf(emp -> emp.getEmployeeID().equals(employeeID)); // Remove the employee from the list based on the employeeID.
 
         EmployeeIDRegistry.updateEmployeeStatus(employeeID, "Terminated"); // Update the employee's status to "Terminated" in the Employee ID registry.
@@ -128,6 +164,15 @@ public class EmployeeService {
         // Update in-memory structures
         employeeList.add(employee);
         employeeMapByEmployeeID.put(employee.getEmployeeID(), employee);     
+    }
+    
+    public void addEmployeeInformation(PersonalInformation newPersonalInformation,
+                            EmploymentInformation newEmploymentInformation,
+                            GovernmentInformation newGovernmentInformation){ 
+        InformationService addNewInformationService = new InformationService();        
+        addNewInformationService.addPersonalInformation(newPersonalInformation);
+        addNewInformationService.addEmploymentInformation(newEmploymentInformation);
+        addNewInformationService.addGovernmentInformation(newGovernmentInformation);   
     }
     
     /**

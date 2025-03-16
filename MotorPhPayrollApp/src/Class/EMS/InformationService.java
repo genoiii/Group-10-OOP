@@ -6,9 +6,11 @@ package Class.EMS;
 
 import CSVFileManager.CsvFile;
 import Class.CollectionUtils;
+import Class.Formatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Service class for managing and processing Information objects.
@@ -38,7 +40,36 @@ public class InformationService {
         this.personalRecordMapByEmployeeID = CollectionUtils.listToMap(personalRecord, PersonalInformation::getEmployeeID);
         this.employmentRecordMapByEmployeeID = CollectionUtils.listToMap(employmentRecord, EmploymentInformation::getEmployeeID);
         this.gorvernmentRecordMapByEmployeeID = CollectionUtils.listToMap(governmentRecord, GovernmentInformation::getEmployeeID);
-    }    
+    }
+
+    public void addPersonalInformation(PersonalInformation newPersonalInformation){
+            
+        CsvFile.PERSONAL_RECORD.appendFile(newPersonalInformation.getInformation()); // Append the employee's information to the CSV file.
+
+        // Update in-memory structures
+        personalRecord.add(newPersonalInformation);
+        personalRecordMapByEmployeeID.put(newPersonalInformation.getEmployeeID(), newPersonalInformation);     
+    }
+    
+    public void addEmploymentInformation(EmploymentInformation newEmploymentInformation){
+            
+        CsvFile.EMPLOYMENT_RECORD.appendFile(newEmploymentInformation.getInformation()); // Append the employee's information to the CSV file.
+
+        // Update in-memory structures
+        employmentRecord.add(newEmploymentInformation);
+        employmentRecordMapByEmployeeID.put(newEmploymentInformation.getEmployeeID(), newEmploymentInformation);     
+    }
+    
+    public void addGovernmentInformation(GovernmentInformation newGovernmentInformation){
+            
+        CsvFile.GOVERNMENT_RECORD.appendFile(newGovernmentInformation.getInformation()); // Append the employee's information to the CSV file.
+
+        // Update in-memory structures
+        governmentRecord.add(newGovernmentInformation);
+        gorvernmentRecordMapByEmployeeID.put(newGovernmentInformation.getEmployeeID(), newGovernmentInformation);     
+    }
+    
+    
 
     /**
      * Updates the personal information of an employee.
@@ -134,6 +165,57 @@ public class InformationService {
         CsvFile.GOVERNMENT_RECORD.writeFile(updatedGovernmentInformationRecord); // Write the updated records back to the CSV file.
     }
     
+    public void deletePersonalInformation(String employeeID){
+        // Check if the employee exists in the map (optional logging, currently commented out).
+        if (!personalRecordMapByEmployeeID.containsKey(employeeID)) return; // Employee not found; exit the method.
+
+        personalRecord.removeIf(emp -> emp.getEmployeeID().equals(employeeID)); // Remove the employee from the list based on the employeeID.
+
+        // Convert the remaining employees into a List of String arrays for CSV writing.
+        List<String[]> updatedPersonalRecord = new ArrayList<>();
+        
+        for (PersonalInformation personal : personalRecord) {
+            updatedPersonalRecord.add(personal.getInformation());
+        }
+        
+        // Write the updated employee records back to the CSV file.
+        CsvFile.PERSONAL_RECORD.writeFile(updatedPersonalRecord);
+    }
+    
+    public void deleteEmploymentInformation(String employeeID){
+        // Check if the employee exists in the map (optional logging, currently commented out).
+        if (!employmentRecordMapByEmployeeID.containsKey(employeeID)) return; // Employee not found; exit the method.
+
+        employmentRecord.removeIf(emp -> emp.getEmployeeID().equals(employeeID)); // Remove the employee from the list based on the employeeID.
+
+        // Convert the remaining employees into a List of String arrays for CSV writing.
+        List<String[]> updatedEmploymentInformation = new ArrayList<>();
+        
+        for (EmploymentInformation employment : employmentRecord) {
+            updatedEmploymentInformation.add(employment.getInformation());
+        }
+        
+        // Write the updated employee records back to the CSV file.
+        CsvFile.EMPLOYMENT_RECORD.writeFile(updatedEmploymentInformation);
+    }
+    
+    public void deleteGovernmentInformation(String employeeID){
+        // Check if the employee exists in the map (optional logging, currently commented out).
+        if (!gorvernmentRecordMapByEmployeeID.containsKey(employeeID)) return; // Employee not found; exit the method.
+
+        governmentRecord.removeIf(emp -> emp.getEmployeeID().equals(employeeID)); // Remove the employee from the list based on the employeeID.
+
+        // Convert the remaining employees into a List of String arrays for CSV writing.
+        List<String[]> updatedGovernmentInformation= new ArrayList<>();
+        
+        for (GovernmentInformation government : governmentRecord) {
+            updatedGovernmentInformation.add(government.getInformation());
+        }
+        
+        // Write the updated employee records back to the CSV file.
+        CsvFile.GOVERNMENT_RECORD.writeFile(updatedGovernmentInformation);
+    }
+    
     /**
      * Retrieves the list of personal information records.
      *
@@ -199,4 +281,35 @@ public class InformationService {
         
     }
     
+    public DefaultTableModel getEmployeeInformationTableModel(){
+        String[] columnNames = {
+            "Employee ID", "Last Name", "First Name", "Birthdate", "Address", "Phone Number"
+        };
+        
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make all cells non-editable
+            }
+        };
+        
+        String outputFormat = "M-d-yyyy";  // Desired format
+        
+        for (PersonalInformation personal : personalRecord) {
+            // Construct a row using the aggregated values.
+            Object[] row = {
+                personal.getEmployeeID(),
+                personal.getLastName(),
+                personal.getFirstName(),
+                Formatter.formatDate(personal.getBirthday(), outputFormat),
+                personal.getAddress(),
+                personal.getPhoneNumber()
+            };
+
+            model.addRow(row);
+            
+        }
+        
+        return model;
+    }
 }

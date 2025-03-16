@@ -17,6 +17,7 @@ public class EmployeeInformation extends javax.swing.JFrame {
     List<Employee> employeeList = CsvFile.EMPLOYEEINFORMATION.readFile(Employee::new);            
     Admin admin;    
     EmployeeService employeeService = new EmployeeService();
+    InformationService informationService =  new InformationService();
     
     /**
      * Creates new form EmployeeInformation
@@ -24,7 +25,8 @@ public class EmployeeInformation extends javax.swing.JFrame {
      */       
     public EmployeeInformation() { 
         initComponents();
-        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Populate table with employee data
+//        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Populate table with employee data
+        jTable1EmployeeList.setModel(informationService.getEmployeeInformationTableModel()); // Populate table with employee data
     }
     
     /**
@@ -38,7 +40,8 @@ public class EmployeeInformation extends javax.swing.JFrame {
         this.admin = admin;
         admin.addLogoutListener(this);
         
-        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Populate table with employee data
+//        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Populate table with employee data
+        jTable1EmployeeList.setModel(informationService.getEmployeeInformationTableModel()); // Populate table with employee data
     }
 
     /**
@@ -351,7 +354,9 @@ public class EmployeeInformation extends javax.swing.JFrame {
         
         employeeService.deleteEmployee(employeeID);
         
-        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Refresh the table model with the updated data
+        InformationService deleteInformationService = new InformationService();
+//        jTable1EmployeeList.setModel(employeeService.getEmployeeTableModel()); // Refresh the table model with the updated data
+        jTable1EmployeeList.setModel(deleteInformationService.getEmployeeInformationTableModel()); // Refresh the table model with the updated data
         
         JOptionPane.showMessageDialog(null, "Successfully Deleted"); // Notify user of successful deletion
     }//GEN-LAST:event_jButton2DeleteEmployeeRecordActionPerformed
