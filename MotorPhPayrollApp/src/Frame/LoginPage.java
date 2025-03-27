@@ -87,7 +87,7 @@ public class LoginPage extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
+                        .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton2ForgotPassword)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -105,14 +105,14 @@ public class LoginPage extends javax.swing.JFrame {
                                         .addComponent(jLabelIncorrectCredentials))
                                     .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.Alignment.TRAILING)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
+                        .addGap(190, 190, 190)
                         .addComponent(jButton1LogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(94, 94, 94)
+                .addGap(110, 110, 110)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1Username)
                     .addComponent(jTextField1Username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -124,9 +124,9 @@ public class LoginPage extends javax.swing.JFrame {
                 .addComponent(jLabelIncorrectCredentials)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2ForgotPassword)
-                .addGap(28, 28, 28)
+                .addGap(30, 30, 30)
                 .addComponent(jButton1LogIn)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MotorPH Logo.png"))); // NOI18N
@@ -154,7 +154,7 @@ public class LoginPage extends javax.swing.JFrame {
                 .addComponent(jLabelLogo)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         pack();
