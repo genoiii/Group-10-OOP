@@ -48,6 +48,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
         jButton6LogOut = new javax.swing.JButton();
         jButton3SelfServicePortal = new javax.swing.JButton();
         jButton4Attendance = new javax.swing.JButton();
+        jLabelMotorPHProfile = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
         jButton5.setBackground(new java.awt.Color(0, 102, 153));
@@ -132,6 +133,8 @@ public class CompanyHomePage extends javax.swing.JFrame {
             }
         });
 
+        jLabelMotorPHProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MotorPH Profile.jpg"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -140,29 +143,34 @@ public class CompanyHomePage extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1EmployeeInformation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3EmployeeRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jButton4Payroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jButton6LogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                    .addComponent(jButton4Attendance, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jButton3EmployeeRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                    .addComponent(jButton4Payroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                    .addComponent(jButton6LogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                    .addComponent(jButton3SelfServicePortal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                    .addComponent(jButton4Attendance, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(jLabelMotorPHProfile)
+                .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(jButton3SelfServicePortal)
-                .addGap(30, 30, 30)
-                .addComponent(jButton3EmployeeRequest)
-                .addGap(30, 30, 30)
-                .addComponent(jButton1EmployeeInformation)
-                .addGap(30, 30, 30)
-                .addComponent(jButton4Payroll)
-                .addGap(30, 30, 30)
-                .addComponent(jButton4Attendance)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
-                .addComponent(jButton6LogOut)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(jButton3SelfServicePortal)
+                        .addGap(30, 30, 30)
+                        .addComponent(jButton3EmployeeRequest)
+                        .addGap(30, 30, 30)
+                        .addComponent(jButton1EmployeeInformation)
+                        .addGap(30, 30, 30)
+                        .addComponent(jButton4Payroll)
+                        .addGap(30, 30, 30)
+                        .addComponent(jButton4Attendance)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6LogOut))
+                    .addComponent(jLabelMotorPHProfile))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -185,7 +193,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(920, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -267,6 +275,7 @@ public class CompanyHomePage extends javax.swing.JFrame {
     private javax.swing.JButton jButton4Payroll;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6LogOut;
+    private javax.swing.JLabel jLabelMotorPHProfile;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;

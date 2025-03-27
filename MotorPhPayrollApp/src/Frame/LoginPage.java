@@ -41,6 +41,8 @@ public class LoginPage extends javax.swing.JFrame {
         jButton2ForgotPassword = new javax.swing.JButton();
         jLabelIncorrectCredentials = new javax.swing.JLabel();
         jPasswordFieldPassword = new javax.swing.JPasswordField();
+        jLabelLogo = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,20 +126,35 @@ public class LoginPage extends javax.swing.JFrame {
                 .addComponent(jButton2ForgotPassword)
                 .addGap(28, 28, 28)
                 .addComponent(jButton1LogIn)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
+
+        jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/MotorPH Logo.png"))); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setText("MotorPH Payroll App");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 253, Short.MAX_VALUE)
+                .addContainerGap(41, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelLogo)
+                    .addComponent(jLabel1))
+                .addGap(30, 30, 30)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addComponent(jLabelLogo)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addContainerGap(120, Short.MAX_VALUE))
         );
 
         pack();
@@ -229,9 +246,11 @@ public class LoginPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1LogIn;
     private javax.swing.JButton jButton2ForgotPassword;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel1Username;
     private javax.swing.JLabel jLabel3Password;
     private javax.swing.JLabel jLabelIncorrectCredentials;
+    private javax.swing.JLabel jLabelLogo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordFieldPassword;
     private javax.swing.JTextField jTextField1Username;
